@@ -9,7 +9,7 @@ decorators, basket plugins, pricing rules, cron jobs, themes, configuration,
 dependency injection context, testing, imports, or Aimeos architecture.
 Always follow Aimeos extension and customization patterns instead of
 modifying Aimeos core or official extensions.
----------------------------------------------
+---
 
 # Aimeos Development Skill
 
