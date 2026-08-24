@@ -36,6 +36,7 @@ body.du-auth {
 
 .du-auth-wrap {
 	min-height: 100vh;
+	min-height: 100dvh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -62,7 +63,7 @@ body.du-auth {
 .du-card {
 	width: 100%;
 	max-width: 26rem;
-	padding: 2.25rem 2rem;
+	padding: 2.5rem;
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent), var(--au-panel);
 	border: 1px solid var(--au-line);
 	border-radius: 1.1rem;
@@ -87,8 +88,12 @@ body.du-auth {
 	letter-spacing: -0.01em;
 	color: var(--au-text);
 }
-.du-card p.du-sub,
-.du-card .mb-4 + h1 { /* placeholder */ }
+
+@media (max-width: 480px) {
+	.du-card {
+		padding: 1.75rem 1.5rem;
+	}
+}
 
 /* Labels (override .text-gray-700 etc.) */
 .du-auth label,
@@ -128,18 +133,56 @@ body.du-auth {
 	box-shadow: 0 0 0 0.2rem var(--au-focus);
 }
 
+/* Form structure (login) */
+.du-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.du-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+.du-field + .du-field {
+	margin-top: 1.25rem;
+}
+.du-field label {
+	margin-bottom: 0;
+}
+
+.du-error {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.8rem;
+	color: #E0797E;
+}
+.du-error li + li {
+	margin-top: 0.25rem;
+}
+
 /* Checkbox */
 .du-auth input[type="checkbox"] {
 	accent-color: var(--au-gold);
-	width: 1rem;
-	height: 1rem;
+	width: 1.05rem;
+	height: 1.05rem;
+	margin: 0;
+	flex: none;
+	cursor: pointer;
 }
-.du-auth .block.mt-4 label {
-	display: inline-flex;
+.du-auth .du-remember {
+	display: flex;
 	align-items: center;
-	gap: 0.5rem;
-	color: var(--au-muted);
+	gap: 0.6rem;
+	margin: 1.4rem 0 0;
 	font-size: 0.85rem;
+	color: var(--au-muted);
+	cursor: pointer;
+	user-select: none;
+}
+.du-auth .du-remember:hover {
+	color: var(--au-text);
 }
 
 /* Buttons (override .bg-gray-800 / uppercase tracking-widest) */
@@ -169,6 +212,20 @@ body.du-auth {
 .du-auth button[type="submit"]:focus-visible {
 	outline: none;
 	box-shadow: 0 0 0 0.2rem var(--au-focus);
+}
+
+/* Footer actions (login): link left, button right */
+.du-actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: 1.75rem;
+}
+.du-link {
+	font-size: 0.85rem;
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 
 /* Layout helpers used by inner views */
@@ -229,6 +286,7 @@ body.du-auth {
 	border: 1px solid rgba(224, 121, 126, 0.3);
 	border-radius: 0.6rem;
 	padding: 0.85rem 1rem;
+	margin-bottom: 1.25rem;
 }
 
 /* Session status block (plain message, no list) */
@@ -237,6 +295,7 @@ body.du-auth {
 	border: 1px solid rgba(91, 190, 146, 0.3);
 	border-radius: 0.6rem;
 	padding: 0.85rem 1rem;
+	margin-bottom: 1.25rem;
 }
 
 /* Footer */
