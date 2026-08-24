@@ -177,6 +177,25 @@ a {
 	background: linear-gradient(90deg, rgba(201, 169, 106, 0.16) 0%, rgba(201, 169, 106, 0) 90%);
 }
 
+/* Replace Aimeos sidebar logo with Duains wordmark */
+.aimeos .logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bs-menu-bg);
+}
+.aimeos .logo img {
+	display: none;
+}
+.aimeos .logo::after {
+	content: "DUAINS";
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	font-size: 0.95rem;
+	color: var(--bs-menu-alt, #C9A96A);
+	text-transform: uppercase;
+}
+
 /* ============================================================
    5. Buttons
    ============================================================ */

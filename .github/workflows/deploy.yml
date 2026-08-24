@@ -54,3 +54,9 @@ jobs:
             #   chmod -R 775 storage bootstrap/cache
             # NOTE: never auto-run vendor:publish in deploys — with --force it
             # overwrites config/shop.php and public/vendor/shop.
+
+            # IMPORTANT: APP_URL in the server .env must equal the live domain.
+            # Aimeos builds all media/theme asset URLs (logo, component CSS) from
+            # APP_URL; if it stays "http://localhost:8000" those links 404 on
+            # production and the storefront logo/basket CSS break. Edit .env then
+            # run `php artisan config:clear` (or it refreshes on the next deploy).

@@ -1,0 +1,46 @@
+/**
+ * Duains storefront — branding & polish layer
+ * Loaded after Aimeos's aimeos.css. Critical wordmark/safety rules are also
+ * inlined in base.blade.php so they apply even before APP_URL is fixed.
+ */
+
+/* Navbar wordmark contrast on dark bar */
+.navbar-brand.duains-brand {
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Footer wordmark on light background */
+footer .duains-brand.footer {
+	font-size: 1.5rem;
+}
+
+/* Keep the offscreen basket panel hidden if Aimeos component CSS is missing */
+.basket-mini .zeynep {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: -20rem;
+	left: unset;
+	width: 20rem;
+	z-index: 1032;
+	pointer-events: none;
+	transition: transform 0.25s;
+}
+.basket-mini .zeynep.opened {
+	transform: translateX(-20rem);
+	pointer-events: auto;
+}
+
+[dir="rtl"] .basket-mini .zeynep {
+	left: -20rem;
+	right: unset;
+}
+[dir="rtl"] .basket-mini .zeynep.opened {
+	transform: translateX(20rem);
+	pointer-events: auto;
+}
+
+/* Basket trigger icon tint to match gold accent (optional polish) */
+.basket-mini .menu:after {
+	color: #fff;
+}

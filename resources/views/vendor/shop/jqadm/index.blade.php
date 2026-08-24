@@ -32,6 +32,11 @@
 			.app-menu .icon {cursor: pointer; padding: 0.75rem; height: 2.5rem; width: 2.5rem; margin: 0 0.25rem;}
 			.app-menu button {border: none; color: var(--ai-bg); background-color: transparent; padding: 0}
 			#logout-form {display: inline-block}
+
+			/* Duains sidebar wordmark (works even if admin-theme.css 404s) */
+			.aimeos .logo {display: flex; align-items: center; justify-content: center; background-color: var(--bs-menu-bg);}
+			.aimeos .logo img {display: none;}
+			.aimeos .logo::after {content: "DUAINS"; font-weight: 700; letter-spacing: 0.16em; font-size: 0.95rem; color: var(--bs-menu-alt, #C9A96A); text-transform: uppercase;}
 		</style>
 	</head>
 <?php $theme = ( $_COOKIE['aimeos_backend_theme'] ?? '' ) == 'light' ? 'light' : 'dark'; ?>
