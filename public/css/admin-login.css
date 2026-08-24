@@ -173,11 +173,26 @@ body.du-auth {
 
 /* Layout helpers used by inner views */
 .du-auth .mt-4 { margin-top: 1.1rem; }
-.du-auth .flex.items-center.justify-end {
+.du-auth .mt-2 { margin-top: 0.5rem; }
+.du-auth .ml-4 { margin-left: 1rem; }
+.du-auth .flex.items-center.justify-end,
+.du-auth .flex.justify-end.mt-4 {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	gap: 0.9rem;
 	margin-top: 1.5rem;
+}
+.du-auth .mt-4.flex.items-center.justify-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1.5rem;
+}
+
+/* Muted body text (paragraphs using text-gray-600 etc., but keep links gold) */
+.du-auth [class*="text-gray"]:not(a):not(label) {
+	color: var(--au-muted);
 }
 
 /* Links */
