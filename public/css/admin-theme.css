@@ -1,0 +1,500 @@
+/**
+ * Duains Admin — premium dark-luxury theme
+ * Loads after the Aimeos jqadm styles and re-skins the admin portal
+ * purely through Bootstrap CSS variables + targeted refinements.
+ */
+
+/* ============================================================
+   1. Design tokens — LIGHT (refined ivory, kept as secondary)
+   ============================================================ */
+
+body {
+	--du-radius-sm: 0.5rem;
+	--du-radius: 0.75rem;
+	--du-radius-lg: 1rem;
+	--du-gold: #C9A96A;
+	--du-on-gold: #17130B;
+	--du-focus-ring: rgba(201, 169, 106, 0.22);
+
+	/* Aimeos / Bootstrap palette */
+	--bs-bg: #F5F2EB;
+	--bs-bg-dark: #EEEAE1;
+	--bs-bg-light: #FFFFFF;
+	--bs-line: #DFD9CC;
+	--bs-line-light: #CCC5B4;
+	--bs-menu: #F2EDE2;
+	--bs-menu-bg: #14110C;
+	--bs-menu-alt-bg: #26200F;
+	--bs-menu-alt: #D6B77E;
+	--bs-primary: #A8834B;
+	--bs-primary-dark: #87682F;
+	--bs-primary-light: #C9A96A;
+	--bs-primary-alt: #6E5A36;
+	--bs-primary-alt-dark: #57472C;
+	--bs-primary-alt-light: #94804F;
+	--bs-secondary: #474A50;
+	--bs-secondary-dark: #16181C;
+	--bs-secondary-light: #7C8087;
+	--bs-shadow: 0 10px 28px rgba(23, 18, 8, 0.08);
+
+	/* Status */
+	--bs-success: #2E9270;
+	--bs-success-rgb: 46, 146, 112;
+	--bs-danger: #C24851;
+	--bs-danger-rgb: 194, 72, 81;
+	--bs-warning: #C08A2D;
+	--bs-warning-rgb: 192, 138, 45;
+	--bs-info: #3E7FA0;
+	--bs-info-rgb: 62, 127, 160;
+	--bs-orange: #C07A3D;
+
+	/* Surfaces for our own refinements */
+	--du-input-bg: #FFFFFF;
+	--du-panel: #FFFFFF;
+	--du-panel-hover: rgba(168, 131, 75, 0.06);
+	--du-head-bg: transparent;
+
+	/* Typography */
+	--bs-body-font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ============================================================
+   2. Design tokens — DARK (default: graphite + champagne gold)
+   ============================================================ */
+
+body.dark {
+	--bs-bg: #101216;
+	--bs-bg-dark: #0B0C0F;
+	--bs-bg-light: #14171D;
+	--bs-line: #262A32;
+	--bs-line-light: #363C46;
+	--bs-menu: #EDE8DC;
+	--bs-menu-bg: #0B0C10;
+	--bs-menu-alt-bg: #1A150D;
+	--bs-menu-alt: #C9A96A;
+	--bs-primary: #C9A96A;
+	--bs-primary-dark: #A8894F;
+	--bs-primary-light: #E3C68F;
+	--bs-primary-alt: #6E5A36;
+	--bs-primary-alt-dark: #55452B;
+	--bs-primary-alt-light: #94804F;
+	--bs-secondary: #C3C7CE;
+	--bs-secondary-dark: #F1EEE6;
+	--bs-secondary-light: #8B929C;
+	--bs-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+
+	--bs-success: #43A97F;
+	--bs-success-rgb: 67, 169, 127;
+	--bs-danger: #D25860;
+	--bs-danger-rgb: 210, 88, 96;
+	--bs-warning: #D9A54A;
+	--bs-warning-rgb: 217, 165, 74;
+	--bs-info: #5C99BB;
+	--bs-info-rgb: 92, 153, 187;
+	--bs-orange: #CE8B52;
+
+	--du-input-bg: #10131A;
+	--du-panel: #15181E;
+	--du-panel-hover: rgba(201, 169, 106, 0.07);
+	--du-head-bg: transparent;
+}
+
+body.dark img {
+	filter: brightness(0.85) contrast(1.1);
+}
+
+/* ============================================================
+   3. Base & typography
+   ============================================================ */
+
+body {
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	letter-spacing: 0.005em;
+	-webkit-font-smoothing: antialiased;
+}
+
+.aimeos h1,
+.aimeos h2,
+.aimeos h3,
+.aimeos h4,
+.aimeos h5,
+.aimeos h6 {
+	color: var(--bs-secondary-dark);
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+
+.aimeos ::selection {
+	background: var(--bs-primary);
+	color: var(--du-on-gold);
+}
+
+a {
+	transition: color 0.15s ease;
+}
+
+/* ============================================================
+   4. Top bar & brand
+   ============================================================ */
+
+.app-menu {
+	box-shadow: inset 0 -1px 0 rgba(201, 169, 106, 0.28), 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.app-brand {
+	display: inline-flex;
+	align-items: center;
+	align-self: center;
+	margin-left: 0.5rem;
+	font-size: 0.78rem;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: var(--bs-menu);
+	white-space: nowrap;
+}
+
+.app-brand b {
+	color: var(--bs-menu-alt);
+	font-weight: 600;
+}
+
+[dir="rtl"] .app-brand {
+	margin-left: 0;
+	margin-right: 0.5rem;
+}
+
+.app-menu .icon:hover {
+	color: var(--bs-menu-alt);
+	transition: color 0.15s ease;
+}
+
+/* Sidebar nav polish */
+.aimeos .menu-item:hover > a,
+.aimeos .menu-item > a.active {
+	background: linear-gradient(90deg, rgba(201, 169, 106, 0.16) 0%, rgba(201, 169, 106, 0) 90%);
+}
+
+/* ============================================================
+   5. Buttons
+   ============================================================ */
+
+.aimeos .btn {
+	border-radius: var(--du-radius-sm);
+	font-weight: 500;
+	transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+.aimeos .btn:active {
+	transform: translateY(1px);
+}
+
+.aimeos .btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+}
+
+.aimeos .btn-primary {
+	--bs-btn-color: var(--du-on-gold);
+	--bs-btn-bg: var(--bs-primary);
+	--bs-btn-border-color: var(--bs-primary);
+	--bs-btn-hover-color: var(--du-on-gold);
+	--bs-btn-hover-bg: var(--bs-primary-dark);
+	--bs-btn-hover-border-color: var(--bs-primary-dark);
+	--bs-btn-active-color: var(--du-on-gold);
+	--bs-btn-active-bg: var(--bs-primary-dark);
+	--bs-btn-active-border-color: var(--bs-primary-dark);
+	--bs-btn-disabled-color: var(--du-on-gold);
+	--bs-btn-disabled-bg: var(--bs-primary);
+	--bs-btn-disabled-border-color: var(--bs-primary);
+}
+
+.aimeos .btn-outline-primary {
+	--bs-btn-color: var(--bs-primary);
+	--bs-btn-border-color: var(--bs-primary);
+	--bs-btn-hover-color: var(--du-on-gold);
+	--bs-btn-hover-bg: var(--bs-primary);
+	--bs-btn-hover-border-color: var(--bs-primary);
+	--bs-btn-active-color: var(--du-on-gold);
+	--bs-btn-active-bg: var(--bs-primary);
+	--bs-btn-active-border-color: var(--bs-primary);
+}
+
+.aimeos .btn-secondary {
+	--bs-btn-color: var(--bs-secondary-dark);
+	--bs-btn-bg: var(--bs-secondary-light);
+	--bs-btn-border-color: var(--bs-secondary-light);
+	--bs-btn-hover-color: var(--bs-secondary-dark);
+	--bs-btn-hover-bg: var(--bs-secondary);
+	--bs-btn-hover-border-color: var(--bs-secondary);
+	--bs-btn-active-color: var(--bs-secondary-dark);
+	--bs-btn-active-bg: var(--bs-secondary);
+	--bs-btn-active-border-color: var(--bs-secondary);
+}
+
+.aimeos .btn-outline-secondary {
+	--bs-btn-color: var(--bs-secondary);
+	--bs-btn-border-color: var(--bs-line-light);
+	--bs-btn-hover-color: var(--bs-secondary-dark);
+	--bs-btn-hover-bg: var(--bs-secondary-light);
+	--bs-btn-hover-border-color: var(--bs-secondary-light);
+}
+
+.aimeos .btn-danger {
+	--bs-btn-color: #fff;
+	--bs-btn-bg: var(--bs-danger);
+	--bs-btn-border-color: var(--bs-danger);
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #b03c45;
+	--bs-btn-hover-border-color: #b03c45;
+	--bs-btn-active-bg: #b03c45;
+	--bs-btn-active-border-color: #b03c45;
+}
+
+/* ============================================================
+   6. Forms
+   ============================================================ */
+
+.aimeos .form-control,
+.aimeos .form-select {
+	background-color: var(--du-input-bg);
+	border-color: var(--bs-line-light);
+	border-radius: var(--du-radius-sm);
+	color: var(--bs-secondary-dark);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.aimeos .form-control::placeholder {
+	color: var(--bs-secondary-light);
+	opacity: 0.75;
+}
+
+.aimeos .form-control:focus,
+.aimeos .form-select:focus {
+	background-color: var(--du-input-bg);
+	border-color: var(--bs-primary);
+	color: var(--bs-secondary-dark);
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+}
+
+.aimeos .input-group-text {
+	background-color: var(--du-input-bg);
+	border-color: var(--bs-line-light);
+	color: var(--bs-secondary-light);
+}
+
+.aimeos .form-label,
+.aimeos label {
+	color: var(--bs-secondary);
+	font-weight: 500;
+}
+
+.aimeos .form-check-input:checked {
+	background-color: var(--bs-primary);
+	border-color: var(--bs-primary);
+}
+
+.aimeos .form-check-input:focus {
+	border-color: var(--bs-primary);
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+}
+
+/* multiselect tags */
+.aimeos .tag {
+	border-radius: 999px !important;
+}
+
+/* ============================================================
+   7. Tables & lists
+   ============================================================ */
+
+.aimeos .table {
+	color: var(--bs-secondary);
+	--bs-table-color: var(--bs-secondary);
+	--bs-table-bg: transparent;
+	--bs-table-border-color: var(--bs-line);
+	--bs-table-striped-color: var(--bs-secondary);
+	--bs-table-striped-bg: var(--du-panel-hover);
+	--bs-table-hover-color: var(--bs-secondary-dark);
+	--bs-table-hover-bg: var(--du-panel-hover);
+}
+
+.aimeos .table > thead th {
+	color: var(--bs-secondary-light);
+	font-size: 0.72rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.09em;
+	border-bottom-color: var(--bs-line-light);
+}
+
+.aimeos .table > tbody tr {
+	transition: background-color 0.12s ease;
+}
+
+/* list headers inside cards */
+.aimeos .list-header {
+	border-bottom: 1px solid var(--bs-line);
+}
+
+/* ============================================================
+   8. Cards, panels, dropdowns, modals, tabs
+   ============================================================ */
+
+.aimeos .card {
+	background-color: var(--du-panel);
+	border-color: var(--bs-line);
+	border-radius: var(--du-radius-lg);
+	box-shadow: var(--bs-shadow);
+}
+
+.aimeos .card-header {
+	border-bottom-color: var(--bs-line);
+}
+
+.aimeos .dropdown-menu {
+	background-color: var(--du-panel);
+	border-color: var(--bs-line);
+	border-radius: var(--du-radius);
+	box-shadow: var(--bs-shadow);
+}
+
+.aimeos .dropdown-item {
+	color: var(--bs-secondary);
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.aimeos .dropdown-item:hover,
+.aimeos .dropdown-item:focus {
+	background-color: var(--du-panel-hover);
+	color: var(--bs-secondary-dark);
+}
+
+.aimeos .modal-content {
+	background-color: var(--du-panel);
+	border-color: var(--bs-line);
+	border-radius: var(--du-radius-lg);
+	box-shadow: var(--bs-shadow);
+}
+
+.aimeos .modal-header,
+.aimeos .modal-footer {
+	border-color: var(--bs-line);
+}
+
+.aimeos .nav-tabs {
+	border-bottom-color: var(--bs-line);
+}
+
+.aimeos .nav-tabs .nav-link {
+	color: var(--bs-secondary-light);
+	border: none;
+	border-bottom: 2px solid transparent;
+	transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.aimeos .nav-tabs .nav-link:hover {
+	color: var(--bs-secondary-dark);
+}
+
+.aimeos .nav-tabs .nav-link.active {
+	color: var(--bs-primary);
+	background: transparent;
+	border-bottom-color: var(--bs-primary);
+}
+
+/* ============================================================
+   9. Badges, alerts, status colors
+   ============================================================ */
+
+.aimeos .badge {
+	border-radius: 999px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	padding: 0.35em 0.75em;
+}
+
+.aimeos .badge-primary,
+.aimeos .bg-primary {
+	background-color: var(--bs-primary) !important;
+	color: var(--du-on-gold);
+}
+
+.aimeos .badge-success,
+.aimeos .bg-success {
+	background-color: var(--bs-success) !important;
+	color: #fff;
+}
+
+.aimeos .badge-warning,
+.aimeos .bg-warning {
+	background-color: var(--bs-warning) !important;
+	color: #241a06;
+}
+
+.aimeos .badge-danger,
+.aimeos .bg-danger {
+	background-color: var(--bs-danger) !important;
+	color: #fff;
+}
+
+.aimeos .alert {
+	border-radius: var(--du-radius);
+	border-color: var(--bs-line);
+}
+
+.aimeos .alert-danger {
+	background-color: rgba(var(--bs-danger-rgb), 0.12);
+	color: var(--bs-danger);
+	border-color: rgba(var(--bs-danger-rgb), 0.35);
+}
+
+.aimeos .alert-success {
+	background-color: rgba(var(--bs-success-rgb), 0.12);
+	color: var(--bs-success);
+	border-color: rgba(var(--bs-success-rgb), 0.35);
+}
+
+.aimeos .alert-warning {
+	background-color: rgba(var(--bs-warning-rgb), 0.12);
+	color: var(--bs-warning);
+	border-color: rgba(var(--bs-warning-rgb), 0.35);
+}
+
+.aimeos .alert-info {
+	background-color: rgba(var(--bs-info-rgb), 0.12);
+	color: var(--bs-info);
+	border-color: rgba(var(--bs-info-rgb), 0.35);
+}
+
+/* ============================================================
+   10. Scrollbars, focus rings, misc
+   ============================================================ */
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--bs-line-light);
+	border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--bs-primary);
+}
+
+html {
+	scrollbar-color: var(--bs-line-light) transparent;
+}
+
+.aimeos a:focus,
+.aimeos button:focus,
+.aimeos [role="button"]:focus {
+	outline: none;
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+	border-radius: var(--du-radius-sm);
+}
+
+.aimeos .btn-theme.icon,
+.app-menu .icon {
+	transition: color 0.15s ease, opacity 0.15s ease;
+}

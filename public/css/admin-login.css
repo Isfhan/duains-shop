@@ -1,0 +1,233 @@
+/**
+ * Duains Admin — login & auth screens (dark luxury)
+ * Self-contained styling so it does not depend on a Tailwind rebuild.
+ * Overrides the Tailwind utility classes emitted by the Breeze components
+ * via higher-specificity, attribute-aware selectors.
+ */
+
+:root {
+	--au-gold: #C9A96A;
+	--au-gold-strong: #E3C68F;
+	--au-on-gold: #17130B;
+	--au-bg: #0B0C10;
+	--au-bg-2: #12141A;
+	--au-panel: #15181F;
+	--au-line: #2A2E37;
+	--au-line-soft: #20242C;
+	--au-text: #E7E4DD;
+	--au-muted: #98A0AB;
+	--au-focus: rgba(201, 169, 106, 0.22);
+}
+
+*{ box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body.du-auth {
+	margin: 0;
+	font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	color: var(--au-text);
+	background:
+		radial-gradient(1200px 600px at 50% -10%, rgba(201, 169, 106, 0.10), transparent 60%),
+		radial-gradient(farthest-side ellipse at 50% 0, var(--au-bg-2), var(--au-bg));
+	background-attachment: fixed;
+	-webkit-font-smoothing: antialiased;
+}
+
+.du-auth-wrap {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 2.5rem 1rem;
+	gap: 1.5rem;
+}
+
+/* Brand */
+.du-auth-brand {
+	font-size: 1.05rem;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: var(--au-text);
+}
+.du-auth-brand span {
+	color: var(--au-gold);
+	font-weight: 600;
+}
+
+/* Card */
+.du-card {
+	width: 100%;
+	max-width: 26rem;
+	padding: 2.25rem 2rem;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent), var(--au-panel);
+	border: 1px solid var(--au-line);
+	border-radius: 1.1rem;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+	position: relative;
+}
+.du-card::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto 0;
+	height: 2px;
+	border-radius: 1.1rem 1.1rem 0 0;
+	background: linear-gradient(90deg, transparent, var(--au-gold), transparent);
+	opacity: 0.8;
+}
+
+.du-card h1,
+.du-card h2 {
+	margin: 0 0 0.35rem;
+	font-size: 1.4rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	color: var(--au-text);
+}
+.du-card p.du-sub,
+.du-card .mb-4 + h1 { /* placeholder */ }
+
+/* Labels (override .text-gray-700 etc.) */
+.du-auth label,
+.du-card label {
+	display: block;
+	font-size: 0.82rem;
+	font-weight: 500;
+	color: var(--au-muted);
+	margin-bottom: 0.4rem;
+}
+
+/* Inputs (override .border-gray-300 / .rounded-md / .focus:ring-indigo) */
+.du-auth input[type="text"],
+.du-auth input[type="email"],
+.du-auth input[type="password"] {
+	width: 100%;
+	padding: 0.7rem 0.9rem;
+	color: var(--au-text);
+	background-color: #10141B;
+	border: 1px solid var(--au-line);
+	border-radius: 0.6rem;
+	font-size: 0.94rem;
+	font-family: inherit;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.du-auth input[type="text"]::placeholder,
+.du-auth input[type="email"]::placeholder,
+.du-auth input[type="password"]::placeholder {
+	color: var(--au-muted);
+	opacity: 0.7;
+}
+.du-auth input[type="text"]:focus,
+.du-auth input[type="email"]:focus,
+.du-auth input[type="password"]:focus {
+	outline: none;
+	border-color: var(--au-gold);
+	box-shadow: 0 0 0 0.2rem var(--au-focus);
+}
+
+/* Checkbox */
+.du-auth input[type="checkbox"] {
+	accent-color: var(--au-gold);
+	width: 1rem;
+	height: 1rem;
+}
+.du-auth .block.mt-4 label {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--au-muted);
+	font-size: 0.85rem;
+}
+
+/* Buttons (override .bg-gray-800 / uppercase tracking-widest) */
+.du-auth button[type="submit"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.7rem 1.4rem;
+	background-color: var(--au-gold);
+	color: var(--au-on-gold);
+	border: 1px solid var(--au-gold);
+	border-radius: 0.6rem;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background-color 0.15s ease, transform 0.05s ease;
+}
+.du-auth button[type="submit"]:hover {
+	background-color: var(--au-gold-strong);
+	border-color: var(--au-gold-strong);
+}
+.du-auth button[type="submit"]:active {
+	transform: translateY(1px);
+}
+.du-auth button[type="submit"]:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 0.2rem var(--au-focus);
+}
+
+/* Layout helpers used by inner views */
+.du-auth .mt-4 { margin-top: 1.1rem; }
+.du-auth .flex.items-center.justify-end {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin-top: 1.5rem;
+}
+
+/* Links */
+.du-auth a {
+	color: var(--au-gold);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+.du-auth a:hover {
+	color: var(--au-gold-strong);
+}
+.du-auth a.underline {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* Error & status blocks (override .text-red-600 / .text-green-600) */
+.du-auth [class*="text-red-600"] {
+	color: #E0797E !important;
+}
+.du-auth [class*="text-green-600"] {
+	color: #5BBE92 !important;
+}
+.du-auth .mb-4 ul {
+	margin: 0.4rem 0 0;
+	padding-left: 1.1rem;
+	font-size: 0.85rem;
+	color: #E0797E;
+}
+
+/* Validation error block (always contains a <ul>) */
+.du-auth .mb-4:has(ul) {
+	background: rgba(224, 121, 126, 0.08);
+	border: 1px solid rgba(224, 121, 126, 0.3);
+	border-radius: 0.6rem;
+	padding: 0.85rem 1rem;
+}
+
+/* Session status block (plain message, no list) */
+.du-auth .mb-4:not(:has(ul)) {
+	background: rgba(91, 190, 146, 0.08);
+	border: 1px solid rgba(91, 190, 146, 0.3);
+	border-radius: 0.6rem;
+	padding: 0.85rem 1rem;
+}
+
+/* Footer */
+.du-foot {
+	margin: 0;
+	font-size: 0.78rem;
+	color: var(--au-muted);
+	letter-spacing: 0.03em;
+}

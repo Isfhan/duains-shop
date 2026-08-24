@@ -3,7 +3,7 @@ name: Deploy to Hostinger
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
@@ -18,5 +18,39 @@ jobs:
           port: ${{ secrets.HOSTINGER_PORT }}
           script: |
             cd ~/domains/silver-stork-881592.hostingersite.com/duains-shop
+
+            # Pull latest code
             git pull origin main
+
+            # PHP dependencies (no-op fast when composer.lock unchanged)
+            composer install --no-dev --prefer-dist --optimize-autoloader
+
+            # DB migrations (additive only; instant no-op when nothing pending)
+            php artisan migrate --force
+
+            # Rebuild caches so new code/config takes effect
             php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # Propagate config changes into Aimeos caches
+            php artisan aimeos:cache || true
+
+            # Self-healing symlink (instant if it already exists)
+            php artisan storage:link || true
+
+            # ------------------------------------------------------------
+            # NOT run every deploy:
+
+            # Frontend build — uncomment ONLY after editing resources/
+            # (css/js/views) that need Tailwind/Vite:
+            #   npm install && npm run build
+
+            # One-time setup (already done on this server):
+            #   php artisan key:generate --force        # only if APP_KEY empty
+            #   php artisan vendor:publish --tag=config --force
+            #   php artisan vendor:publish --tag=public --force
+            #   chmod -R 775 storage bootstrap/cache
+            # NOTE: never auto-run vendor:publish in deploys — with --force it
+            # overwrites config/shop.php and public/vendor/shop.
