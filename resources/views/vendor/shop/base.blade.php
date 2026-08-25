@@ -1,3 +1,31 @@
+<?php
+/**
+ * Resolve the Aimeos site logo uploaded via JQAdm -> Settings -> Basic.
+ * $aimeossite is composed into every view by AppServiceProvider.
+ */
+$siteLogoUrl = null;
+try {
+	$logoRel = '';
+	if( isset( $aimeossite ) && $aimeossite ) {
+		if( method_exists( $aimeossite, 'getLogo' ) ) {
+			$logoRel = trim( (string) $aimeossite->getLogo() );
+		}
+		if( $logoRel === '' && method_exists( $aimeossite, 'getConfigValue' ) ) {
+			$logoRel = trim( (string) $aimeossite->getConfigValue( 'logo', '' ) );
+		}
+	}
+	if( $logoRel !== '' ) {
+		$base   = rtrim( (string) config( 'shop.resource.fs-media.baseurl', '' ), '/' );
+		$baseFs = rtrim( (string) config( 'shop.resource.fs-media.basedir', public_path( 'aimeos' ) ), '/' );
+		$relPath = ltrim( $logoRel, '/' );
+		if( $base !== '' && is_file( $baseFs . '/' . $relPath ) ) {
+			$siteLogoUrl = $base . '/' . $relPath;
+		}
+	}
+} catch( \Throwable $e ) {
+	$siteLogoUrl = null;
+}
+?>
 <!DOCTYPE html>
 <html class="no-js" lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) ? 'rtl' : 'ltr' }}">
 	<head>
@@ -47,6 +75,17 @@
 			.duains-brand.footer { color: #1c1c1e; }
 			.duains-brand.footer span { color: #A8834B; }
 
+			/* Uploaded site logo (replaces the wordmark when set in JQAdm) */
+			.duains-brand-img {
+				display: block;
+				max-height: 100px;
+				width: auto;
+				height: auto;
+			}
+			.duains-brand.footer .duains-brand-img {
+				max-height: 100px;
+			}
+
 			/* Basket offscreen safety net (in case Aimeos component CSS 404s) */
 			.basket-mini .zeynep {
 				position: fixed;
@@ -68,7 +107,13 @@
 	</head>
 	<body class="{{ $page ?? '' }}">
 		<nav class="navbar navbar-expand-md navbar-top">
-			<a class="navbar-brand duains-brand" href="/" title="Duains">DUAINS<span>.shop</span></a>
+			<a class="navbar-brand duains-brand" href="/" title="Duains">
+				@if( $siteLogoUrl )
+					<img class="duains-brand-img" src="{{ $siteLogoUrl }}?v={{ config('shop.version', 1) }}" alt="Duains">
+				@else
+					DUAINS<span>.shop</span>
+				@endif
+			</a>
 
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-top" aria-controls="navbar-top" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -133,7 +178,13 @@
 					</div>
 					<div class="col-md-4 footer-right">
 						<div class="footer-block">
-							<a class="duains-brand footer" href="/" title="Duains">DUAINS<span>.shop</span></a>
+							<a class="duains-brand footer" href="/" title="Duains">
+								@if( $siteLogoUrl )
+									<img class="duains-brand-img" src="{{ $siteLogoUrl }}?v={{ config('shop.version', 1) }}" alt="Duains">
+								@else
+									DUAINS<span>.shop</span>
+								@endif
+							</a>
 							<div class="social" aria-label="{{ __('Social media links') }}">
 								<p><a href="#" class="sm facebook" title="Facebook" rel="noopener">Facebook</a></p>
 								<p><a href="#" class="sm twitter" title="Twitter" rel="noopener">Twitter</a></p>

@@ -87,6 +87,21 @@ body.dark .aimeos a:hover {
 	margin-right: 0.5rem;
 }
 
+/* Brand image — black-background logos melt into the onyx top bar */
+.app-brand-logo {
+	display: block;
+	max-height: 2rem;
+	width: auto;
+	max-width: 13rem;
+	object-fit: contain;
+	mix-blend-mode: screen;
+}
+
+/* Text fallback when no image is available */
+.app-brand-text {
+	color: var(--du-menu-fg);
+}
+
 .app-menu .icon {
 	cursor: pointer;
 	padding: 0.75rem;

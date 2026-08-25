@@ -1,3 +1,48 @@
+<?php
+/**
+ * Resolve the shop name + logo for the JQAdm top-bar header.
+ * Logo source: Aimeos site item only (upload via JQAdm -> Settings -> Basic).
+ * If no logo is uploaded, fall back to the site label rendered as text.
+ */
+$shopName = trim( (string) ( config( 'app.name' ) ?: 'Duains' ) );
+$logoUrl  = null;
+$logoW    = 0;
+$logoH    = 0;
+
+try {
+	$ctx = app( 'aimeos.context' )->get( false );
+	if( $ctx && method_exists( $ctx, 'locale' ) ) {
+		$siteItem = $ctx->locale()->getSiteItem();
+		if( $siteItem ) {
+			if( method_exists( $siteItem, 'getLabel' ) ) {
+				$lbl = trim( (string) $siteItem->getLabel() );
+				if( $lbl !== '' ) {
+					$shopName = $lbl;
+				}
+			}
+			if( method_exists( $siteItem, 'getLogo' ) ) {
+				$rel = trim( (string) $siteItem->getLogo() );
+				if( $rel === '' && method_exists( $siteItem, 'getConfigValue' ) ) {
+					$rel = trim( (string) $siteItem->getConfigValue( 'logo', '' ) );
+				}
+				if( $rel !== '' ) {
+					$base   = rtrim( (string) config( 'shop.resource.fs-media.baseurl', '' ), '/' );
+					$baseFs = rtrim( (string) config( 'shop.resource.fs-media.basedir', public_path( 'aimeos' ) ), '/' );
+					$relPath = ltrim( $rel, '/' );
+					if( $base !== '' && is_file( $baseFs . '/' . $relPath ) ) {
+						$logoUrl = $base . '/' . $relPath;
+						$size = @getimagesize( $baseFs . '/' . $relPath );
+						$logoW = $size ? (int) $size[0] : 200;
+						$logoH = $size ? (int) $size[1] : 60;
+					}
+				}
+			}
+		}
+	}
+} catch( \Throwable $e ) {
+	// Keep defaults; the bar still renders the text fallback below.
+}
+?>
 <!DOCTYPE html>
 <html lang="{{ $locale }}" dir="{{ $localeDir }}">
 	<head>
@@ -10,7 +55,7 @@
 			<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; {{ config( 'shop.csp.backend', 'style-src \'unsafe-inline\' \'self\' https://cdnjs.cloudflare.com; script-src \'unsafe-eval\' \'self\'; connect-src \'self\' https://*.deepl.com https://api.openai.com; img-src \'self\' data: blob: https://*.tile.openstreetmap.org https://aimeos.org; frame-src https://www.youtube.com https://player.vimeo.com' ) }}">
 		@endif
 
-		<title>Duains Admin</title>
+		<title>{{ $shopName }} Admin</title>
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +81,13 @@
 	<body class="<?= $theme ?> duains">
 		<div class="app-menu">
 			<span class="menu"></span>
-			<a class="app-brand" href="<?= url('/') ?>" target="_blank" rel="noopener">Duains<b>&nbsp;Admin</b></a>
+			<a class="app-brand" href="<?= url('/') ?>" target="_blank" rel="noopener">
+				<?php if( $logoUrl !== null ) : ?>
+					<img class="app-brand-logo" src="<?= e( $logoUrl ) ?>" alt="<?= e( $shopName ) ?>" width="<?= e( $logoW ) ?>" height="<?= e( $logoH ) ?>">
+				<?php else : ?>
+					<span class="app-brand-text"><?= e( $shopName ) ?></span>
+				<?php endif; ?>
+			</a>
 			<div class="app-menu-end">
 				<form id="logout-form" action="{{ airoute( 'logout', ['locale' => Request::get( 'locale', app()->getLocale() )] ) }}" method="POST">
 					{{ csrf_field() }}
