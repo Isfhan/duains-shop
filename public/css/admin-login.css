@@ -1,10 +1,9 @@
 /**
- * Duains Admin — login & auth screens (DESIGN.md)
- * Self-contained styling so it does not depend on a Tailwind rebuild.
- * Colors come from public/css/duains-tokens.css, so this page follows
- * the same dark/light theme as the Aimeos backend (body.dark).
- * Overrides Tailwind utilities emitted by the Breeze components via
- * higher-specificity, attribute-aware selectors.
+ * Duains Auth — split-screen login & auth screens (DESIGN.md)
+ * Left: brand hero (matte black, gold bottle mark, serif wordmark).
+ * Right: login form on elevated dark surface.
+ * Self-contained styling — no Tailwind rebuild required.
+ * Colors come from public/css/duains-tokens.css (body.dark = Deep Onyx set).
  */
 
 * {
@@ -22,114 +21,174 @@ body.du-auth {
 	font-size: 0.9375rem;
 	line-height: 1.55;
 	color: var(--du-text);
-	background:
-		radial-gradient(1200px 600px at 50% -10%, rgba(197, 160, 89, 0.10), transparent 60%),
-		radial-gradient(farthest-side ellipse at 50% 0, var(--du-surface), var(--du-bg));
-	background-attachment: fixed;
-	color-scheme: inherit;
+	background-color: #121212;
+	color-scheme: dark;
 	-webkit-font-smoothing: antialiased;
 }
 
-.du-auth-wrap {
+/* ============================================================
+   1. Split-screen shell
+   ============================================================ */
+
+.du-split {
+	display: grid;
+	grid-template-columns: 1fr;
 	min-height: 100vh;
 	min-height: 100dvh;
+}
+
+@media (min-width: 1024px) {
+	.du-split {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+/* ============================================================
+   2. Brand hero (left panel)
+   ============================================================ */
+
+.du-hero {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 2.5rem 1rem;
-	gap: 1.5rem;
+	text-align: center;
+	padding: 3.5rem 2rem;
+	background-color: #0d0d0d;
+	overflow: hidden;
 }
 
-/* Brand */
-.du-auth-brand {
-	font-family: var(--du-font-display);
-	font-size: 1.15rem;
-	font-weight: 600;
-	letter-spacing: 0.20em;
-	text-transform: uppercase;
-	text-decoration: none;
-	color: var(--du-text);
-}
-
-.du-auth-brand span {
-	color: var(--du-gold-text);
-}
-
-body.dark .du-auth-brand span {
-	color: var(--du-gold);
-}
-
-/* Card */
-.du-card {
-	width: 100%;
-	max-width: 26rem;
-	padding: 2.5rem;
-	background: var(--du-elevated);
-	border: 1px solid var(--du-line);
-	border-radius: var(--du-radius-lg);
-	box-shadow: var(--bs-shadow, 0 24px 60px rgba(0, 0, 0, 0.45));
-	position: relative;
-	color: var(--du-text);
-}
-
-.du-card::before {
+/* Soft radial glow behind the logo */
+.du-hero::before {
 	content: "";
 	position: absolute;
-	inset: 0 0 auto 0;
-	height: 2px;
-	border-radius: var(--du-radius-lg) var(--du-radius-lg) 0 0;
-	background: linear-gradient(90deg, transparent, var(--du-gold), transparent);
-	opacity: 0.8;
+	inset: 0;
+	background:
+		radial-gradient(480px 480px at 50% 46%, rgba(197, 160, 89, 0.18), transparent 65%),
+		radial-gradient(760px 380px at 50% 110%, rgba(197, 160, 89, 0.07), transparent 70%);
+	pointer-events: none;
 }
 
-.du-card h1,
-.du-card h2 {
-	margin: 0 0 0.35rem;
-	font-family: var(--du-font-display);
-	font-size: 1.45rem;
-	font-weight: 600;
-	letter-spacing: 0.01em;
-	color: var(--du-text);
+/* Subtle inner border frame */
+.du-hero::after {
+	content: "";
+	position: absolute;
+	inset: 1.25rem;
+	border: 1px solid rgba(197, 160, 89, 0.20);
+	border-radius: 0.75rem;
+	pointer-events: none;
 }
 
-@media (max-width: 480px) {
-	.du-card {
-		padding: 1.75rem 1.5rem;
+@media (min-width: 1024px) {
+	.du-hero {
+		padding: 4rem 3rem;
 	}
 }
 
-/* Labels (override .text-gray-700 etc.) */
+/* Brand logo image (gold artwork on black — screen blend melts
+   the black canvas into the hero background) */
+.du-hero-logo {
+	display: block;
+	width: clamp(240px, 24vw, 330px);
+	height: auto;
+	position: relative;
+	mix-blend-mode: screen;
+}
+
+.du-hero-tag {
+	position: relative;
+	margin: 0.75rem 0 0;
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.34em;
+	text-indent: 0.34em;
+	text-transform: uppercase;
+	color: #a39c8c;
+}
+
+/* ============================================================
+   3. Form pane (right panel)
+   ============================================================ */
+
+.du-pane {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 3rem 2rem 2.5rem;
+	gap: 1.75rem;
+	background-color: #121212;
+}
+
+.du-form-wrap {
+	width: 100%;
+	max-width: 28rem;
+}
+
+.du-foot {
+	margin: 0;
+	font-size: 0.72rem;
+	letter-spacing: 0.04em;
+	color: #8a8578;
+	text-align: center;
+}
+
+/* Welcome heading */
+.du-head h2 {
+	margin: 0;
+	font-family: var(--du-font-display);
+	font-size: 1.75rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	color: #ffffff;
+}
+
+.du-head p {
+	margin: 0.5rem 0 0;
+	font-size: 0.875rem;
+	color: #a3a19b;
+}
+
+.du-head + * {
+	margin-top: 1.75rem;
+}
+
+/* ============================================================
+   4. Form components
+   ============================================================ */
+
+/* Labels — crisp white uppercase */
 .du-auth label,
 .du-card label {
 	display: block;
-	font-size: 0.78rem;
-	font-weight: 500;
-	letter-spacing: 0.06em;
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: var(--du-muted);
-	margin-bottom: 0.4rem;
+	color: #ffffff;
+	margin-bottom: 0.5rem;
 }
 
-/* Inputs (override .border-gray-300 / .rounded-md / .focus:ring-indigo) */
+/* Inputs — dark wells with gold focus */
 .du-auth input[type="text"],
 .du-auth input[type="email"],
 .du-auth input[type="password"] {
 	width: 100%;
-	padding: 0.7rem 0.9rem;
-	color: var(--du-text);
-	background-color: var(--du-input-bg);
-	border: 1px solid var(--du-line-strong);
+	padding: 0.75rem 1rem;
+	color: #ffffff;
+	background-color: rgba(255, 255, 255, 0.05);
+	border: 1px solid #3f3f3f;
 	border-radius: var(--du-radius-sm);
 	font-size: 0.94rem;
 	font-family: inherit;
-	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
 .du-auth input[type="text"]::placeholder,
 .du-auth input[type="email"]::placeholder,
 .du-auth input[type="password"]::placeholder {
-	color: var(--du-faint);
+	color: #9a978e;
 	opacity: 1;
 }
 
@@ -137,11 +196,12 @@ body.dark .du-auth-brand span {
 .du-auth input[type="email"]:focus,
 .du-auth input[type="password"]:focus {
 	outline: none;
+	background-color: rgba(255, 255, 255, 0.07);
 	border-color: var(--du-gold);
-	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+	box-shadow: 0 0 0 1px var(--du-gold);
 }
 
-/* Form structure (login) */
+/* Form structure */
 .du-form {
 	display: flex;
 	flex-direction: column;
@@ -150,7 +210,7 @@ body.dark .du-auth-brand span {
 .du-field {
 	display: flex;
 	flex-direction: column;
-	gap: 0.4rem;
+	gap: 0.25rem;
 }
 
 .du-field + .du-field {
@@ -159,6 +219,14 @@ body.dark .du-auth-brand span {
 
 .du-field label {
 	margin-bottom: 0;
+}
+
+.du-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: 1.4rem;
 }
 
 .du-error {
@@ -184,111 +252,82 @@ body.dark .du-auth-brand span {
 }
 
 .du-auth .du-remember {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	gap: 0.6rem;
-	margin: 1.4rem 0 0;
+	margin: 0;
 	font-size: 0.85rem;
-	text-transform: none;
+	font-weight: 400;
 	letter-spacing: normal;
-	color: var(--du-muted);
+	text-transform: none;
+	color: #d4d4d4;
 	cursor: pointer;
 	user-select: none;
 }
 
 .du-auth .du-remember:hover {
-	color: var(--du-text);
+	color: #ffffff;
 }
 
-/* Buttons (override .bg-gray-800 / uppercase tracking-widest) */
+/* Primary action — solid gold */
+.du-auth .du-btn,
 .du-auth button[type="submit"] {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.7rem 1.4rem;
+	padding: 0.9rem 1.4rem;
 	background-color: var(--du-gold);
 	color: var(--du-on-gold);
 	border: 1px solid var(--du-gold);
 	border-radius: var(--du-radius-sm);
 	font-family: var(--du-font-body);
-	font-size: 0.8rem;
-	font-weight: 600;
-	letter-spacing: 0.08em;
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	cursor: pointer;
-	transition: background-color 0.15s ease, transform 0.05s ease;
+	box-shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.65);
+	transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
 }
 
+/* Full-width variant used by the login form's primary action */
+.du-auth .du-btn {
+	width: 100%;
+	margin-top: 1.6rem;
+}
+
+.du-auth .du-btn:hover,
 .du-auth button[type="submit"]:hover {
 	background-color: var(--bs-primary-dark);
 	border-color: var(--bs-primary-dark);
+	box-shadow: 0 14px 32px -12px rgba(197, 160, 89, 0.35);
 }
 
+.du-auth .du-btn:active,
 .du-auth button[type="submit"]:active {
 	transform: translateY(1px);
 }
 
+.du-auth .du-btn:focus-visible,
 .du-auth button[type="submit"]:focus-visible {
 	outline: none;
 	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
 }
 
-/* Footer actions (login): link left, button right */
-.du-actions {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	margin-top: 1.75rem;
-}
-
-.du-link {
-	font-size: 0.85rem;
-	text-transform: none;
-	letter-spacing: normal;
-	text-decoration: underline;
-	text-underline-offset: 2px;
-}
-
-/* Layout helpers used by inner views */
-.du-auth .mt-4 { margin-top: 1.1rem; }
-.du-auth .mt-2 { margin-top: 0.5rem; }
-.du-auth .ml-4 { margin-left: 1rem; }
-
-.du-auth .flex.items-center.justify-end,
-.du-auth .flex.justify-end.mt-4 {
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	gap: 0.9rem;
-	margin-top: 1.5rem;
-}
-
-.du-auth .mt-4.flex.items-center.justify-between {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 1.5rem;
-}
-
-/* Muted body text (paragraphs using text-gray-600 etc., but keep links branded) */
-.du-auth [class*="text-gray"]:not(a):not(label):not(button) {
-	color: var(--du-muted);
-}
-
 /* Links */
-.du-auth a:not(.du-auth-brand) {
-	color: var(--du-gold-text);
+.du-auth a {
+	color: var(--du-gold);
 	text-decoration: none;
 	transition: color 0.15s ease;
 }
 
-.du-auth a:not(.du-auth-brand):hover {
-	color: var(--bs-primary-alt-dark);
+.du-auth a:hover {
+	color: #ffffff;
 }
 
-body.dark .du-auth a:not(.du-auth-brand):hover {
-	color: var(--du-gold-light);
+.du-auth a.du-link {
+	font-size: 0.85rem;
+	text-decoration: none;
 }
 
 .du-auth a.underline {
@@ -296,7 +335,10 @@ body.dark .du-auth a:not(.du-auth-brand):hover {
 	text-underline-offset: 2px;
 }
 
-/* Error & status blocks (override .text-red-600 / .text-green-600) */
+/* ============================================================
+   5. Status / error blocks
+   ============================================================ */
+
 .du-auth [class*="text-red-600"] {
 	color: var(--du-status-danger-text) !important;
 }
@@ -331,10 +373,32 @@ body.dark .du-auth a:not(.du-auth-brand):hover {
 	color: var(--du-status-success-text);
 }
 
-/* Footer */
-.du-foot {
-	margin: 0;
-	font-size: 0.78rem;
-	color: var(--du-muted);
-	letter-spacing: 0.03em;
+/* ============================================================
+   6. Layout helpers for secondary auth views
+   (register / forgot-password / reset-password)
+   ============================================================ */
+
+.du-auth .mt-4 { margin-top: 1.1rem; }
+.du-auth .mt-2 { margin-top: 0.5rem; }
+.du-auth .ml-4 { margin-left: 1rem; }
+
+.du-auth .flex.items-center.justify-end,
+.du-auth .flex.justify-end.mt-4 {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.9rem;
+	margin-top: 1.5rem;
+}
+
+.du-auth .mt-4.flex.items-center.justify-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1.5rem;
+}
+
+/* Muted body text (paragraphs using text-gray-* utilities) */
+.du-auth [class*="text-gray"]:not(a):not(label):not(button) {
+	color: #a3a19b;
 }

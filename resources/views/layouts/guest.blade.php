@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Duains &mdash; {{ __('Sign in') }}</title>
+        <title>{{ __('Login') }} &mdash; Duains</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,16 +14,24 @@
         <link rel="stylesheet" href="{{ asset('css/admin-login.css') }}?v={{ config('shop.version', 1) }}">
     </head>
 
-@php $theme = ($_COOKIE['aimeos_backend_theme'] ?? '') == 'light' ? 'light' : 'dark'; @endphp
-    <body class="du-auth {{ $theme }}">
-        <main class="du-auth-wrap">
-            <a class="du-auth-brand" href="{{ url('/') }}">Duains<span>&nbsp;Admin</span></a>
+    {{-- Auth screens are a fixed dark brand experience --}}
+    <body class="du-auth dark">
+        <main class="du-split">
+            <aside class="du-hero">
+                <img class="du-hero-logo"
+                     src="{{ asset('images/duains-logo.png') }}?v={{ config('shop.version', 1) }}"
+                     alt="Duain Fragrances"
+                     width="1230" height="1278">
+                <p class="du-hero-tag">{{ __('Maison de Parfum') }}</p>
+            </aside>
 
-            <div class="du-card">
-                {{ $slot }}
-            </div>
+            <section class="du-pane">
+                <div class="du-form-wrap">
+                    {{ $slot }}
+                </div>
 
-            <p class="du-foot">&copy; {{ date('Y') }} Duains</p>
+                <p class="du-foot">&copy; {{ date('Y') }} Duain Fragrances. {{ __('All rights reserved.') }}</p>
+            </section>
         </main>
     </body>
 </html>

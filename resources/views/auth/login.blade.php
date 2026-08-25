@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div class="du-head">
+        <h2>{{ __('Welcome back') }}</h2>
+        <p>{{ __('Sign in to access your account') }}</p>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -26,23 +31,23 @@
             <x-input-error :messages="$errors->get('password')" class="du-error" />
         </div>
 
-        <!-- Remember Me -->
-        <label class="du-remember" for="remember_me">
-            <input id="remember_me" type="checkbox" name="remember">
-            <span>{{ __('Remember me') }}</span>
-        </label>
+        <!-- Controls row: remember me + forgot password -->
+        <div class="du-row">
+            <label class="du-remember" for="remember_me">
+                <input id="remember_me" type="checkbox" name="remember">
+                <span>{{ __('Remember me') }}</span>
+            </label>
 
-        <!-- Actions -->
-        <div class="du-actions">
             @if (Route::has('password.request'))
                 <a class="du-link" href="{{ airoute('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
-
-            <x-button>
-                {{ __('Log in') }}
-            </x-button>
         </div>
+
+        <!-- Primary action -->
+        <button type="submit" class="du-btn">
+            {{ __('Log in') }}
+        </button>
     </form>
 </x-guest-layout>
