@@ -9,11 +9,13 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/duains-tokens.css') }}?v={{ config('shop.version', 1) }}">
         <link rel="stylesheet" href="{{ asset('css/admin-login.css') }}?v={{ config('shop.version', 1) }}">
     </head>
 
-    <body class="du-auth">
+@php $theme = ($_COOKIE['aimeos_backend_theme'] ?? '') == 'light' ? 'light' : 'dark'; @endphp
+    <body class="du-auth {{ $theme }}">
         <main class="du-auth-wrap">
             <a class="du-auth-brand" href="{{ url('/') }}">Duains<span>&nbsp;Admin</span></a>
 

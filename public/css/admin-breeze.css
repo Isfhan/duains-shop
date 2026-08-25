@@ -1,0 +1,266 @@
+/**
+ * Duains Admin — Breeze shell theme: dashboard, profile, app layout (DESIGN.md)
+ * Loads after the Vite/Tailwind build and duains-tokens.css.
+ * Scoped to body.du-admin so storefront pages stay untouched.
+ * Overrides Tailwind utility colors inside the scope so every
+ * text/surface pair stays WCAG-AA readable in BOTH light and dark mode.
+ */
+
+/* ============================================================
+   1. Base & typography
+   ============================================================ */
+
+body.du-admin {
+	font-family: var(--du-font-body);
+	color: var(--du-text);
+	background-color: var(--du-bg);
+	-webkit-font-smoothing: antialiased;
+}
+
+body.du-admin ::selection {
+	background: var(--du-gold);
+	color: var(--du-on-gold);
+}
+
+body.du-admin h1,
+body.du-admin h2,
+body.du-admin h3,
+body.du-admin h4 {
+	font-family: var(--du-font-display);
+	color: var(--du-text);
+	letter-spacing: 0.01em;
+}
+
+body.du-admin a:not(.du-nav-link) {
+	color: var(--du-gold-text);
+}
+
+body.dark.du-admin a:not(.du-nav-link):hover {
+	color: var(--du-gold-light);
+}
+
+/* Brand wordmark used in the navigation bar */
+body.du-admin .du-brand {
+	font-family: var(--du-font-display);
+	font-size: 1.05rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--du-text);
+	text-decoration: none;
+}
+
+body.du-admin .du-brand b {
+	color: var(--du-gold-text);
+	font-weight: 600;
+}
+
+body.dark.du-admin .du-brand b {
+	color: var(--du-gold-light);
+}
+
+/* ============================================================
+   2. Surfaces (Tailwind utility overrides)
+   ============================================================ */
+
+body.du-admin [class*="bg-white"],
+body.du-admin [class*="bg-gray-800"],
+body.du-admin [class*="bg-gray-700"] {
+	background-color: var(--du-elevated);
+}
+
+body.du-admin [class*="bg-gray-100"],
+body.du-admin [class*="bg-gray-900"],
+body.du-admin [class*="bg-gray-50"] {
+	background-color: var(--du-surface);
+}
+
+/* ============================================================
+   3. Ink ramp (Tailwind utility overrides)
+   ============================================================ */
+
+body.du-admin [class*="text-gray-9"],
+body.du-admin [class*="text-gray-8"],
+body.du-admin [class*="text-gray-7"] {
+	color: var(--du-text);
+}
+
+body.du-admin [class*="text-gray-6"],
+body.du-admin [class*="text-gray-5"],
+body.du-admin [class*="text-gray-4"],
+body.du-admin [class*="text-gray-3"] {
+	color: var(--du-muted);
+}
+
+/* Status texts */
+body.du-admin [class*="text-red-6"],
+body.du-admin [class*="text-red-5"],
+body.du-admin [class*="text-red-4"] {
+	color: var(--du-status-danger-text);
+}
+
+body.du-admin [class*="text-green-6"],
+body.du-admin [class*="text-green-5"],
+body.du-admin [class*="text-green-4"] {
+	color: var(--du-status-success-text);
+}
+
+/* Indigo accents become Signature Gold */
+body.du-admin [class*="border-indigo"] {
+	border-color: var(--du-gold);
+}
+
+body.du-admin [class*="ring-indigo"] {
+	--tw-ring-color: var(--du-focus-ring);
+}
+
+body.du-admin [class*="ring-offset"] {
+	--tw-ring-offset-color: transparent;
+}
+
+/* Borders */
+body.du-admin [class*="border-gray"] {
+	border-color: var(--du-line);
+}
+
+/* ============================================================
+   4. Navigation bar
+   ============================================================ */
+
+body.du-admin nav[class] {
+	border-bottom: 1px solid var(--du-line);
+	box-shadow: inset 0 -1px 0 rgba(197, 160, 89, 0.22);
+}
+
+body.du-admin header[class] {
+	border-bottom: 1px solid var(--du-line);
+	background-color: var(--du-elevated);
+}
+
+/* ============================================================
+   5. Forms
+   ============================================================ */
+
+body.du-admin label {
+	color: var(--du-muted);
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+body.du-admin input[type="text"],
+body.du-admin input[type="email"],
+body.du-admin input[type="password"],
+body.du-admin input[type="date"],
+body.du-admin select,
+body.du-admin textarea {
+	background-color: var(--du-input-bg);
+	color: var(--du-text);
+	border: 1px solid var(--du-line-strong);
+	border-radius: var(--du-radius-sm);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.du-admin input::placeholder,
+body.du-admin textarea::placeholder {
+	color: var(--du-faint);
+	opacity: 1;
+}
+
+body.du-admin input:focus,
+body.du-admin select:focus,
+body.du-admin textarea:focus {
+	outline: none;
+	border-color: var(--du-gold);
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+}
+
+body.du-admin input[type="checkbox"] {
+	accent-color: var(--du-gold);
+}
+
+/* ============================================================
+   6. Buttons
+   ============================================================ */
+
+/* Primary action (x-primary-button renders type="submit") */
+body.du-admin button[type="submit"],
+body.du-admin .du-admin-btn {
+	background-color: var(--du-gold);
+	color: var(--du-on-gold);
+	border: 1px solid var(--du-gold);
+	border-radius: var(--du-radius-sm);
+	text-decoration: none;
+	transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+body.du-admin button[type="submit"]:hover,
+body.du-admin .du-admin-btn:hover {
+	background-color: var(--bs-primary-dark);
+	border-color: var(--bs-primary-dark);
+	color: var(--du-on-gold);
+}
+
+body.du-admin button[type="submit"]:active,
+body.du-admin .du-admin-btn:active {
+	transform: translateY(1px);
+}
+
+/* Secondary action (type="button") */
+body.du-admin button[type="button"][class*="rounded"] {
+	background-color: var(--du-btn2-bg);
+	color: var(--du-btn2-fg);
+	border-color: var(--du-btn2-border);
+}
+
+body.du-admin button[type="button"][class*="rounded"]:hover {
+	background-color: var(--du-btn2-hover-bg);
+	color: var(--du-btn2-fg);
+}
+
+/* Danger actions */
+body.du-admin [class*="bg-red-"] {
+	background-color: var(--du-badge-danger-bg);
+	color: #FFFFFF;
+}
+
+body.du-admin [class*="hover:bg-red-"]:hover {
+	background-color: #A63A42;
+	color: #FFFFFF;
+}
+
+body.du-admin button:focus-visible,
+body.du-admin a:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
+}
+
+/* Dropdown panels */
+body.du-admin [x-show] > div {
+	background-color: var(--du-elevated);
+	border: 1px solid var(--du-line);
+	box-shadow: var(--bs-shadow);
+}
+
+body.du-admin [class*="ring-black"] {
+	--tw-ring-color: var(--du-line);
+}
+
+/* Cards inherit soft elevation */
+body.du-admin main > div > div > div[class*="shadow"],
+body.du-admin main div[class*="sm:rounded-lg"] {
+	border: 1px solid var(--du-line);
+	border-radius: var(--du-radius-lg);
+	box-shadow: var(--bs-shadow);
+}
+
+/* Scrollbars */
+body.du-admin ::-webkit-scrollbar-thumb {
+	background-color: var(--du-line-strong);
+	border-radius: 999px;
+}
+
+html {
+	scrollbar-color: var(--du-line-strong) transparent;
+}

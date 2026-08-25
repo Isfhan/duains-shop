@@ -69,7 +69,7 @@ return array_replace_recursive( $multiroute, $multishop + [
 	'roles' => ['admin', 'editor'], // user groups allowed to access the admin backend
 	'panel' => 'dashboard', // panel shown in admin backend after login
 
-	// Backend CSP, extended from the Aimeos default to allow Google Fonts (Inter)
+	// Backend CSP, extended from the Aimeos default to allow Google Fonts (Playfair Display + Montserrat)
 	'csp' => ['backend' => 'style-src \'unsafe-inline\' \'self\' https://cdnjs.cloudflare.com https://fonts.googleapis.com; script-src \'unsafe-eval\' \'self\'; connect-src \'self\' https://*.deepl.com https://api.openai.com; img-src \'self\' data: blob: https://*.tile.openstreetmap.org https://aimeos.org; frame-src https://www.youtube.com https://player.vimeo.com; font-src \'self\' data: https://fonts.gstatic.com'],
 
 	'routes' => [

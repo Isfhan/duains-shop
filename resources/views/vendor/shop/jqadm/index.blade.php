@@ -14,7 +14,7 @@
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 		<link rel="stylesheet" href="<?= airoute( 'aimeos_shop_jqadm_file', ['site' => $site, 'locale' => 'en', 'name' => 'vendor-css'] ) ?>">
 		@if( $localeDir == 'rtl' )
@@ -24,19 +24,12 @@
 		@endif
 		<link rel="stylesheet" href="<?= airoute( 'aimeos_shop_jqadm_file', ['site' => $site, 'locale' => 'en', 'name' => 'index-css'] ) ?>">
 
+		<link rel="stylesheet" href="<?= asset('css/duains-tokens.css') ?>?v=<?= config('shop.version', 1) ?>">
 		<link rel="stylesheet" href="<?= asset('css/admin-theme.css') ?>?v=<?= config('shop.version', 1) ?>">
 
 		<style nonce="{{ app( 'aimeos.context' )->get( false )->nonce() }}">
 			body.dark .btn-theme.dark-mode {display:none}
 			body.light .btn-theme.light-mode {display:none}
-			.app-menu .icon {cursor: pointer; padding: 0.75rem; height: 2.5rem; width: 2.5rem; margin: 0 0.25rem;}
-			.app-menu button {border: none; color: var(--ai-bg); background-color: transparent; padding: 0}
-			#logout-form {display: inline-block}
-
-			/* Duains sidebar wordmark (works even if admin-theme.css 404s) */
-			.aimeos .logo {display: flex; align-items: center; justify-content: center; background-color: var(--bs-menu-bg);}
-			.aimeos .logo img {display: none;}
-			.aimeos .logo::after {content: "DUAINS"; font-weight: 700; letter-spacing: 0.16em; font-size: 0.95rem; color: var(--bs-menu-alt, #C9A96A); text-transform: uppercase;}
 		</style>
 	</head>
 <?php $theme = ( $_COOKIE['aimeos_backend_theme'] ?? '' ) == 'light' ? 'light' : 'dark'; ?>

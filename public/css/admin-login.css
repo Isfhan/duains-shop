@@ -1,36 +1,32 @@
 /**
- * Duains Admin — login & auth screens (dark luxury)
+ * Duains Admin — login & auth screens (DESIGN.md)
  * Self-contained styling so it does not depend on a Tailwind rebuild.
- * Overrides the Tailwind utility classes emitted by the Breeze components
- * via higher-specificity, attribute-aware selectors.
+ * Colors come from public/css/duains-tokens.css, so this page follows
+ * the same dark/light theme as the Aimeos backend (body.dark).
+ * Overrides Tailwind utilities emitted by the Breeze components via
+ * higher-specificity, attribute-aware selectors.
  */
 
-:root {
-	--au-gold: #C9A96A;
-	--au-gold-strong: #E3C68F;
-	--au-on-gold: #17130B;
-	--au-bg: #0B0C10;
-	--au-bg-2: #12141A;
-	--au-panel: #15181F;
-	--au-line: #2A2E37;
-	--au-line-soft: #20242C;
-	--au-text: #E7E4DD;
-	--au-muted: #98A0AB;
-	--au-focus: rgba(201, 169, 106, 0.22);
+* {
+	box-sizing: border-box;
 }
 
-*{ box-sizing: border-box; }
-
-html, body { height: 100%; }
+html,
+body {
+	height: 100%;
+}
 
 body.du-auth {
 	margin: 0;
-	font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	color: var(--au-text);
+	font-family: var(--du-font-body);
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	color: var(--du-text);
 	background:
-		radial-gradient(1200px 600px at 50% -10%, rgba(201, 169, 106, 0.10), transparent 60%),
-		radial-gradient(farthest-side ellipse at 50% 0, var(--au-bg-2), var(--au-bg));
+		radial-gradient(1200px 600px at 50% -10%, rgba(197, 160, 89, 0.10), transparent 60%),
+		radial-gradient(farthest-side ellipse at 50% 0, var(--du-surface), var(--du-bg));
 	background-attachment: fixed;
+	color-scheme: inherit;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -47,16 +43,21 @@ body.du-auth {
 
 /* Brand */
 .du-auth-brand {
-	font-size: 1.05rem;
+	font-family: var(--du-font-display);
+	font-size: 1.15rem;
 	font-weight: 600;
-	letter-spacing: 0.22em;
+	letter-spacing: 0.20em;
 	text-transform: uppercase;
 	text-decoration: none;
-	color: var(--au-text);
+	color: var(--du-text);
 }
+
 .du-auth-brand span {
-	color: var(--au-gold);
-	font-weight: 600;
+	color: var(--du-gold-text);
+}
+
+body.dark .du-auth-brand span {
+	color: var(--du-gold);
 }
 
 /* Card */
@@ -64,29 +65,32 @@ body.du-auth {
 	width: 100%;
 	max-width: 26rem;
 	padding: 2.5rem;
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent), var(--au-panel);
-	border: 1px solid var(--au-line);
-	border-radius: 1.1rem;
-	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+	background: var(--du-elevated);
+	border: 1px solid var(--du-line);
+	border-radius: var(--du-radius-lg);
+	box-shadow: var(--bs-shadow, 0 24px 60px rgba(0, 0, 0, 0.45));
 	position: relative;
+	color: var(--du-text);
 }
+
 .du-card::before {
 	content: "";
 	position: absolute;
 	inset: 0 0 auto 0;
 	height: 2px;
-	border-radius: 1.1rem 1.1rem 0 0;
-	background: linear-gradient(90deg, transparent, var(--au-gold), transparent);
+	border-radius: var(--du-radius-lg) var(--du-radius-lg) 0 0;
+	background: linear-gradient(90deg, transparent, var(--du-gold), transparent);
 	opacity: 0.8;
 }
 
 .du-card h1,
 .du-card h2 {
 	margin: 0 0 0.35rem;
-	font-size: 1.4rem;
+	font-family: var(--du-font-display);
+	font-size: 1.45rem;
 	font-weight: 600;
-	letter-spacing: -0.01em;
-	color: var(--au-text);
+	letter-spacing: 0.01em;
+	color: var(--du-text);
 }
 
 @media (max-width: 480px) {
@@ -99,9 +103,11 @@ body.du-auth {
 .du-auth label,
 .du-card label {
 	display: block;
-	font-size: 0.82rem;
+	font-size: 0.78rem;
 	font-weight: 500;
-	color: var(--au-muted);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--du-muted);
 	margin-bottom: 0.4rem;
 }
 
@@ -111,26 +117,28 @@ body.du-auth {
 .du-auth input[type="password"] {
 	width: 100%;
 	padding: 0.7rem 0.9rem;
-	color: var(--au-text);
-	background-color: #10141B;
-	border: 1px solid var(--au-line);
-	border-radius: 0.6rem;
+	color: var(--du-text);
+	background-color: var(--du-input-bg);
+	border: 1px solid var(--du-line-strong);
+	border-radius: var(--du-radius-sm);
 	font-size: 0.94rem;
 	font-family: inherit;
 	transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+
 .du-auth input[type="text"]::placeholder,
 .du-auth input[type="email"]::placeholder,
 .du-auth input[type="password"]::placeholder {
-	color: var(--au-muted);
-	opacity: 0.7;
+	color: var(--du-faint);
+	opacity: 1;
 }
+
 .du-auth input[type="text"]:focus,
 .du-auth input[type="email"]:focus,
 .du-auth input[type="password"]:focus {
 	outline: none;
-	border-color: var(--au-gold);
-	box-shadow: 0 0 0 0.2rem var(--au-focus);
+	border-color: var(--du-gold);
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
 }
 
 /* Form structure (login) */
@@ -144,9 +152,11 @@ body.du-auth {
 	flex-direction: column;
 	gap: 0.4rem;
 }
+
 .du-field + .du-field {
 	margin-top: 1.25rem;
 }
+
 .du-field label {
 	margin-bottom: 0;
 }
@@ -156,33 +166,38 @@ body.du-auth {
 	padding: 0;
 	list-style: none;
 	font-size: 0.8rem;
-	color: #E0797E;
+	color: var(--du-status-danger-text);
 }
+
 .du-error li + li {
 	margin-top: 0.25rem;
 }
 
 /* Checkbox */
 .du-auth input[type="checkbox"] {
-	accent-color: var(--au-gold);
+	accent-color: var(--du-gold);
 	width: 1.05rem;
 	height: 1.05rem;
 	margin: 0;
 	flex: none;
 	cursor: pointer;
 }
+
 .du-auth .du-remember {
 	display: flex;
 	align-items: center;
 	gap: 0.6rem;
 	margin: 1.4rem 0 0;
 	font-size: 0.85rem;
-	color: var(--au-muted);
+	text-transform: none;
+	letter-spacing: normal;
+	color: var(--du-muted);
 	cursor: pointer;
 	user-select: none;
 }
+
 .du-auth .du-remember:hover {
-	color: var(--au-text);
+	color: var(--du-text);
 }
 
 /* Buttons (override .bg-gray-800 / uppercase tracking-widest) */
@@ -191,27 +206,31 @@ body.du-auth {
 	align-items: center;
 	justify-content: center;
 	padding: 0.7rem 1.4rem;
-	background-color: var(--au-gold);
-	color: var(--au-on-gold);
-	border: 1px solid var(--au-gold);
-	border-radius: 0.6rem;
-	font-size: 0.82rem;
+	background-color: var(--du-gold);
+	color: var(--du-on-gold);
+	border: 1px solid var(--du-gold);
+	border-radius: var(--du-radius-sm);
+	font-family: var(--du-font-body);
+	font-size: 0.8rem;
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
 	cursor: pointer;
 	transition: background-color 0.15s ease, transform 0.05s ease;
 }
+
 .du-auth button[type="submit"]:hover {
-	background-color: var(--au-gold-strong);
-	border-color: var(--au-gold-strong);
+	background-color: var(--bs-primary-dark);
+	border-color: var(--bs-primary-dark);
 }
+
 .du-auth button[type="submit"]:active {
 	transform: translateY(1px);
 }
+
 .du-auth button[type="submit"]:focus-visible {
 	outline: none;
-	box-shadow: 0 0 0 0.2rem var(--au-focus);
+	box-shadow: 0 0 0 0.2rem var(--du-focus-ring);
 }
 
 /* Footer actions (login): link left, button right */
@@ -222,8 +241,11 @@ body.du-auth {
 	gap: 1rem;
 	margin-top: 1.75rem;
 }
+
 .du-link {
 	font-size: 0.85rem;
+	text-transform: none;
+	letter-spacing: normal;
 	text-decoration: underline;
 	text-underline-offset: 2px;
 }
@@ -232,6 +254,7 @@ body.du-auth {
 .du-auth .mt-4 { margin-top: 1.1rem; }
 .du-auth .mt-2 { margin-top: 0.5rem; }
 .du-auth .ml-4 { margin-left: 1rem; }
+
 .du-auth .flex.items-center.justify-end,
 .du-auth .flex.justify-end.mt-4 {
 	display: flex;
@@ -240,6 +263,7 @@ body.du-auth {
 	gap: 0.9rem;
 	margin-top: 1.5rem;
 }
+
 .du-auth .mt-4.flex.items-center.justify-between {
 	display: flex;
 	align-items: center;
@@ -247,20 +271,26 @@ body.du-auth {
 	margin-top: 1.5rem;
 }
 
-/* Muted body text (paragraphs using text-gray-600 etc., but keep links gold) */
-.du-auth [class*="text-gray"]:not(a):not(label) {
-	color: var(--au-muted);
+/* Muted body text (paragraphs using text-gray-600 etc., but keep links branded) */
+.du-auth [class*="text-gray"]:not(a):not(label):not(button) {
+	color: var(--du-muted);
 }
 
 /* Links */
-.du-auth a {
-	color: var(--au-gold);
+.du-auth a:not(.du-auth-brand) {
+	color: var(--du-gold-text);
 	text-decoration: none;
 	transition: color 0.15s ease;
 }
-.du-auth a:hover {
-	color: var(--au-gold-strong);
+
+.du-auth a:not(.du-auth-brand):hover {
+	color: var(--bs-primary-alt-dark);
 }
+
+body.dark .du-auth a:not(.du-auth-brand):hover {
+	color: var(--du-gold-light);
+}
+
 .du-auth a.underline {
 	text-decoration: underline;
 	text-underline-offset: 2px;
@@ -268,40 +298,43 @@ body.du-auth {
 
 /* Error & status blocks (override .text-red-600 / .text-green-600) */
 .du-auth [class*="text-red-600"] {
-	color: #E0797E !important;
+	color: var(--du-status-danger-text) !important;
 }
+
 .du-auth [class*="text-green-600"] {
-	color: #5BBE92 !important;
+	color: var(--du-status-success-text) !important;
 }
+
 .du-auth .mb-4 ul {
 	margin: 0.4rem 0 0;
 	padding-left: 1.1rem;
 	font-size: 0.85rem;
-	color: #E0797E;
+	color: var(--du-status-danger-text);
 }
 
 /* Validation error block (always contains a <ul>) */
 .du-auth .mb-4:has(ul) {
-	background: rgba(224, 121, 126, 0.08);
-	border: 1px solid rgba(224, 121, 126, 0.3);
-	border-radius: 0.6rem;
+	background: rgba(var(--bs-danger-rgb), 0.10);
+	border: 1px solid rgba(var(--bs-danger-rgb), 0.32);
+	border-radius: var(--du-radius);
 	padding: 0.85rem 1rem;
 	margin-bottom: 1.25rem;
 }
 
 /* Session status block (plain message, no list) */
 .du-auth .mb-4:not(:has(ul)) {
-	background: rgba(91, 190, 146, 0.08);
-	border: 1px solid rgba(91, 190, 146, 0.3);
-	border-radius: 0.6rem;
+	background: rgba(var(--bs-success-rgb), 0.10);
+	border: 1px solid rgba(var(--bs-success-rgb), 0.32);
+	border-radius: var(--du-radius);
 	padding: 0.85rem 1rem;
 	margin-bottom: 1.25rem;
+	color: var(--du-status-success-text);
 }
 
 /* Footer */
 .du-foot {
 	margin: 0;
 	font-size: 0.78rem;
-	color: var(--au-muted);
+	color: var(--du-muted);
 	letter-spacing: 0.03em;
 }

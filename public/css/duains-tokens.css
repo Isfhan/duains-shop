@@ -1,0 +1,206 @@
+/**
+ * Duains Admin — shared design tokens (DESIGN.md)
+ * Single source of truth for the brand palette, typography and radii.
+ * Loaded before every admin-related stylesheet:
+ *   - public/css/admin-theme.css   (Aimeos JQAdm backend)
+ *   - public/css/admin-login.css   (auth screens)
+ *   - public/css/admin-breeze.css  (Breeze dashboard / profile)
+ *
+ * Palette (DESIGN.md):
+ *   Deep Onyx     #0A0A0A → #000000  dark canvas
+ *   Signature Gold #C5A059          primary actions, active states, linework
+ *   Radiant Gold  #E8D08D           hover states, highlights
+ *   Warm Cream    #F4EFE6           light canvas
+ *
+ * Mode selection: light values on `body`, dark overrides on `body.dark`.
+ * All foreground/background pairs meet WCAG AA in both modes.
+ */
+
+body {
+	/* Typography */
+	--du-font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+	--du-font-body: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+	/* Brand */
+	--du-gold: #C5A059;
+	--du-gold-light: #E8D08D;
+	--du-on-gold: #17130B;
+	--du-focus-ring: rgba(197, 160, 89, 0.28);
+
+	/* Gold tuned for SMALL text (>=4.5:1 against the canvas of its mode) */
+	--du-gold-text: #77602F;
+
+	/* Shape */
+	--du-radius-sm: 0.5rem;
+	--du-radius: 0.75rem;
+	--du-radius-lg: 1rem;
+
+	/* Surfaces — light (Warm Cream) */
+	--du-bg: #F4EFE6;
+	--du-bg-deep: #EBE4D4;
+	--du-surface: #FAF7F0;
+	--du-elevated: #FFFFFF;
+	--du-line: #DED7C8;
+	--du-line-strong: #C3BA9F;
+	--du-panel-hover: rgba(119, 96, 47, 0.06);
+
+	/* Ink — light */
+	--du-text: #1A1712;
+	--du-muted: #57513F;
+	--du-faint: #6E6754;
+
+	/* Sidebar (onyx in both modes) */
+	--du-menu-bg: #100D08;
+	--du-menu-line: rgba(197, 160, 89, 0.16);
+	--du-menu-fg: #EDE8DA;
+	--du-menu-muted: #A79F8C;
+	--du-menu-alt: #D8BC85;
+
+	/* Status — text colors for tinted surfaces (AA on --du-elevated) */
+	--du-status-success-text: #17664A;
+	--du-status-danger-text: #A63A42;
+	--du-status-warning-text: #8A6414;
+	--du-status-info-text: #2E688A;
+
+	/* Status — solid badge fills with their AA text pairs */
+	--du-badge-primary-bg: #C5A059;
+	--du-badge-primary-fg: #17130B;
+	--du-badge-success-bg: #47B789;
+	--du-badge-success-fg: #0A2A1F;
+	--du-badge-warning-bg: #D2A13C;
+	--du-badge-warning-fg: #241A06;
+	--du-badge-danger-bg: #C24851;
+	--du-badge-danger-fg: #FFFFFF;
+	--du-badge-info-bg: #5AA5CC;
+	--du-badge-info-fg: #0B2230;
+
+	/* Secondary button pair (fixes dark-mode inversion) */
+	--du-btn2-bg: #FFFFFF;
+	--du-btn2-border: #C3BA9F;
+	--du-btn2-fg: #1A1712;
+	--du-btn2-hover-bg: #EFE9DB;
+
+	color-scheme: light;
+
+	/* ============================================================
+	   Bootstrap variables consumed by Aimeos JQAdm
+	   ============================================================ */
+
+	/* Canvas & lines */
+	--bs-bg: var(--du-bg);
+	--bs-bg-dark: var(--du-bg-deep);
+	--bs-bg-light: var(--du-elevated);
+	--bs-line: var(--du-line);
+	--bs-line-light: var(--du-line-strong);
+
+	/* Sidebar */
+	--bs-menu: var(--du-menu-fg);
+	--bs-menu-bg: var(--du-menu-bg);
+	--bs-menu-alt-bg: #1E180C;
+	--bs-menu-alt: var(--du-menu-alt);
+
+	/* Primary (gold fills; gold TEXT is handled per-rule via --du-gold-text) */
+	--bs-primary: #C5A059;
+	--bs-primary-dark: #A98543;
+	--bs-primary-light: #E8D08D;
+	--bs-primary-alt: #77602F;
+	--bs-primary-alt-dark: #5C491F;
+	--bs-primary-alt-light: #997F45;
+
+	/* Text ramp */
+	--bs-secondary: #3D3930;
+	--bs-secondary-dark: #1A1712;
+	--bs-secondary-light: #6E6754;
+	--bs-shadow: 0 10px 30px rgba(26, 20, 8, 0.10);
+
+	/* Status fills (+ rgb triplets for tinted alerts) */
+	--bs-success: #37A67C;
+	--bs-success-rgb: 55, 166, 124;
+	--bs-danger: #C24851;
+	--bs-danger-rgb: 194, 72, 81;
+	--bs-warning: #D2A13C;
+	--bs-warning-rgb: 210, 161, 60;
+	--bs-info: #4E93BC;
+	--bs-info-rgb: 78, 147, 188;
+	--bs-orange: #C97F45;
+
+	/* Surfaces used by component stylesheets */
+	--du-input-bg: #FFFFFF;
+	--du-panel: var(--du-elevated);
+}
+
+/* ============================================================
+   DARK — Deep Onyx canvas (default theme)
+   ============================================================ */
+
+body.dark {
+	--du-gold-text: #D8BC85;
+
+	--du-bg: #0A0A0A;
+	--du-bg-deep: #000000;
+	--du-surface: #111110;
+	--du-elevated: #181714;
+	--du-line: #27241D;
+	--du-line-strong: #3C3729;
+	--du-panel-hover: rgba(197, 160, 89, 0.08);
+
+	--du-text: #F4EFE6;
+	--du-muted: #A69E8C;
+	--du-faint: #857E6E;
+
+	--du-menu-bg: #000000;
+	--du-menu-line: rgba(197, 160, 89, 0.22);
+
+	--du-status-success-text: #5FC79B;
+	--du-status-danger-text: #E5737B;
+	--du-status-warning-text: #E4BD66;
+	--du-status-info-text: #82B8D4;
+
+	--du-btn2-bg: #23211B;
+	--du-btn2-border: #3C3729;
+	--du-btn2-fg: #F4EFE6;
+	--du-btn2-hover-bg: #2E2B23;
+
+	color-scheme: dark;
+
+	--bs-bg: var(--du-bg);
+	--bs-bg-dark: var(--du-bg-deep);
+	--bs-bg-light: var(--du-surface);
+	--bs-line: var(--du-line);
+	--bs-line-light: var(--du-line-strong);
+
+	--bs-menu: var(--du-menu-fg);
+	--bs-menu-bg: var(--du-menu-bg);
+	--bs-menu-alt-bg: #201808;
+	--bs-menu-alt: var(--du-gold-text);
+
+	--bs-primary: #C5A059;
+	--bs-primary-dark: #A98543;
+	--bs-primary-light: #E8D08D;
+	--bs-primary-alt: #997F45;
+	--bs-primary-alt-dark: #77602F;
+	--bs-primary-alt-light: #B2955B;
+
+	--bs-secondary: #C9C3B4;
+	--bs-secondary-dark: #F4EFE6;
+	--bs-secondary-light: #A69E8C;
+	--bs-shadow: 0 14px 38px rgba(0, 0, 0, 0.55);
+
+	--bs-success: #45B98D;
+	--bs-success-rgb: 69, 185, 141;
+	--bs-danger: #D25860;
+	--bs-danger-rgb: 210, 88, 96;
+	--bs-warning: #DCAC46;
+	--bs-warning-rgb: 220, 172, 70;
+	--bs-info: #5FA3CB;
+	--bs-info-rgb: 95, 163, 203;
+	--bs-orange: #CE8B52;
+
+	--du-input-bg: #101010;
+	--du-panel: var(--du-elevated);
+}
+
+/* Images keep their depth on the onyx canvas without going muddy */
+body.dark img {
+	filter: brightness(0.88) contrast(1.08);
+}
