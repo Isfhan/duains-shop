@@ -22,7 +22,7 @@
                      src="{{ asset('images/duains-logo.png') }}?v={{ config('shop.version', 1) }}"
                      alt="Duain Fragrances"
                      width="1230" height="1278">
-                <p class="du-hero-tag">{{ __('Maison de Parfum') }}</p>
+                <p class="du-hero-tag">{{ __('Elegance in Every Scent') }}</p>
             </aside>
 
             <section class="du-pane">
