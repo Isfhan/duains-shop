@@ -19,8 +19,9 @@ jobs:
           script: |
             cd ~/domains/silver-stork-881592.hostingersite.com/duains-shop
 
-            # 1. Pull latest code (including pre-compiled public/build)
-            git pull origin main
+            # 1. Force reset server working directory to match GitHub main branch exactly
+            git fetch origin main
+            git reset --hard origin/main
 
             # 2. Install PHP Dependencies without proc_open scripts
             composer install --no-dev --prefer-dist --optimize-autoloader --no-scripts
