@@ -19,44 +19,23 @@ jobs:
           script: |
             cd ~/domains/silver-stork-881592.hostingersite.com/duains-shop
 
-            # Pull latest code
+            # 1. Pull latest code
             git pull origin main
 
-            # PHP dependencies (no-op fast when composer.lock unchanged)
+            # 2. Install PHP Dependencies
             composer install --no-dev --prefer-dist --optimize-autoloader
 
-            # DB migrations (additive only; instant no-op when nothing pending)
+            # 3. Compile Frontend Assets (Vite/Tailwind)
+            npm install
+            npm run build
+
+            # 4. Run Migrations
             php artisan migrate --force
 
-            # Rebuild caches so new code/config takes effect
+            # 5. Clear & Rebuild Application Caches
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-
-            # Propagate config changes into Aimeos caches
             php artisan aimeos:cache || true
-
-            # Self-healing symlink (instant if it already exists)
             php artisan storage:link || true
-
-            # ------------------------------------------------------------
-            # NOT run every deploy:
-
-            # Frontend build — uncomment ONLY after editing resources/
-            # (css/js/views) that need Tailwind/Vite:
-            #   npm install && npm run build
-
-            # One-time setup (already done on this server):
-            #   php artisan key:generate --force        # only if APP_KEY empty
-            #   php artisan vendor:publish --tag=config --force
-            #   php artisan vendor:publish --tag=public --force
-            #   chmod -R 775 storage bootstrap/cache
-            # NOTE: never auto-run vendor:publish in deploys — with --force it
-            # overwrites config/shop.php and public/vendor/shop.
-
-            # IMPORTANT: APP_URL in the server .env must equal the live domain.
-            # Aimeos builds all media/theme asset URLs (logo, component CSS) from
-            # APP_URL; if it stays "http://localhost:8000" those links 404 on
-            # production and the storefront logo/basket CSS break. Edit .env then
-            # run `php artisan config:clear` (or it refreshes on the next deploy).
