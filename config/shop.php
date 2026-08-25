@@ -271,4 +271,15 @@ return array_replace_recursive( $multiroute, $multishop + [
 	'backend' => [
 	],
 
+	'admin' => [
+		'jqadm' => [
+			'product' => [
+				// Use the null-safe stock client override (app/Jqadm/Product/Stock/Myproject.php)
+				'stock' => [
+					'name' => 'StockFix',
+				],
+			],
+		],
+	],
+
 ] );
