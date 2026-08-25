@@ -81,13 +81,6 @@ try {
 	<body class="<?= $theme ?> duains">
 		<div class="app-menu">
 			<span class="menu"></span>
-			<a class="app-brand" href="<?= url('/') ?>" target="_blank" rel="noopener">
-				<?php if( $logoUrl !== null ) : ?>
-					<img class="app-brand-logo" src="<?= e( $logoUrl ) ?>" alt="<?= e( $shopName ) ?>" width="<?= e( $logoW ) ?>" height="<?= e( $logoH ) ?>">
-				<?php else : ?>
-					<span class="app-brand-text"><?= e( $shopName ) ?></span>
-				<?php endif; ?>
-			</a>
 			<div class="app-menu-end">
 				<form id="logout-form" action="{{ airoute( 'logout', ['locale' => Request::get( 'locale', app()->getLocale() )] ) }}" method="POST">
 					{{ csrf_field() }}
