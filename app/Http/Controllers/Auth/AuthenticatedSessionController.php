@@ -30,7 +30,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(airoute( 'aimeos_home' ));
+        // Redirect to the admin dashboard if the user has admin or editor role
+        if( $request->user()->can( 'admin', [\Aimeos\Shop\Controller\AdminController::class, config( 'shop.roles', ['admin', 'editor'] )] ) ) {
+            return redirect( airoute( 'aimeos_shop_admin' ) );
+        }
+
+        return redirect()->intended( airoute( 'aimeos_home' ) );
     }
 
     /**
