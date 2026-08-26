@@ -134,27 +134,26 @@ try {
 			</button>
 			<div class="collapse navbar-collapse" id="navbar-top">
 				@yield('aimeos_head_nav')
+				@yield('aimeos_head_locale')
+				@yield('aimeos_head_search')
+
+				<ul class="navbar-nav">
+					@if (Auth::guest() && config('app.shop_registration'))
+						<li class="nav-item register"><a class="nav-link" href="{{ airoute( 'register' ) }}" title="{{ __( 'Register' ) }}"><span class="name">{{ __('Register') }}</span></a></li>
+					@endif
+					@if (Auth::guest())
+						<li class="nav-item login"><a class="nav-link" href="{{ airoute( 'login' ) }}" title="{{ __( 'Login' ) }}"><span class="name">{{ __( 'Login' ) }}</span></a></li>
+					@else
+						<li class="nav-item login profile dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" title="{{ __( 'Account' ) }}"><span class="name">{{ __( 'Account' ) }}</span> <span class="caret"></span></a>
+							<ul class="dropdown-menu dropdown-menu-end" role="menu">
+								<li class="dropdown-item"><a class="nav-link" href="{{ airoute( 'aimeos_shop_account' ) }}"><span class="name">{{ __( 'Profile' ) }}</span></a></li>
+								<li class="dropdown-item"><form id="logout" action="{{ airoute( 'logout' ) }}" method="POST">{{ csrf_field() }}<button class="nav-link"><span class="name">{{ __( 'Logout' ) }}</span></button></form></li>
+							</ul>
+						</li>
+					@endif
+				</ul>
 			</div>
-
-			@yield('aimeos_head_locale')
-			@yield('aimeos_head_search')
-
-			<ul class="navbar-nav">
-				@if (Auth::guest() && config('app.shop_registration'))
-					<li class="nav-item register"><a class="nav-link" href="{{ airoute( 'register' ) }}" title="{{ __( 'Register' ) }}"><span class="name">{{ __('Register') }}</span></a></li>
-				@endif
-				@if (Auth::guest())
-					<li class="nav-item login"><a class="nav-link" href="{{ airoute( 'login' ) }}" title="{{ __( 'Login' ) }}"><span class="name">{{ __( 'Login' ) }}</span></a></li>
-				@else
-					<li class="nav-item login profile dropdown">
-						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" title="{{ __( 'Account' ) }}"><span class="name">{{ __( 'Account' ) }}</span> <span class="caret"></span></a>
-						<ul class="dropdown-menu dropdown-menu-end" role="menu">
-							<li class="dropdown-item"><a class="nav-link" href="{{ airoute( 'aimeos_shop_account' ) }}"><span class="name">{{ __( 'Profile' ) }}</span></a></li>
-							<li class="dropdown-item"><form id="logout" action="{{ airoute( 'logout' ) }}" method="POST">{{ csrf_field() }}<button class="nav-link"><span class="name">{{ __( 'Logout' ) }}</span></button></form></li>
-						</ul>
-					</li>
-				@endif
-			</ul>
 
 			@yield('aimeos_head_basket')
 		</nav>
