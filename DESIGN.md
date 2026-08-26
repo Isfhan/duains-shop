@@ -32,3 +32,18 @@ Interactions must feel expensive—fluid, tactile, and visually balanced across 
 *   **Input Controls:** Active form fields utilize a Signature Gold border and subtle ring glow (`focus:border-[#D4AF37] focus:ring-[#D4AF37]`).
 *   **Primary Action Buttons:** Solid gold buttons (`bg-[#D4AF37] text-black font-bold`) feature smooth 60fps hover transitions (`hover:bg-[#C5A059]`) and subtle gold ambient glow.
 *   **Cursor & Hovers:** Custom gold-dot cursor expanding into a translucent ring over clickable elements.
+
+## 6. Storefront Header & Off-Canvas Basket
+Implemented via `public/mytheme/aimeos.css` + `public/mytheme/aimeos.js` (loaded last in `<head>`/`<body>`) and the local extension `packages/duains` (official Aimeos template override, registered via `shop.extdir`). No vendor files are modified.
+
+*   **Announcement bar (topbar):** Fixed Deep Onyx strip above the glass navbar, 2.25rem tall, uppercase gold text (`#E8D08D`) with wide tracking and a gold dot separator. Slides away on scroll; the navbar glides to `top: 0`.
+*   **Glass navbar:** White glassmorphism — `rgba(255,255,255,.55)` at rest over the stage, `rgba(255,255,255,.92)` + gold hairline bottom border + soft shadow once `.is-scrolled`. Blur (`blur(12px) saturate(160%)`) lives on a `::before` so the fixed basket/category drawers are never trapped in a filter containing block. Wordmark is Playfair Display ink with a gold `.shop` accent.
+*   **Nav links:** Ink with a gold underline micro-animation (`scaleX`) and letter-spacing drift on hover/focus; mega/drop-down panels are frosted glass instead of solid dark.
+*   **Search:** Always-visible frosted pill (template override drops the base slide-out mechanic), 999px radius, gold focus ring, width grows `11rem → 15rem` on focus.
+*   **Off-canvas basket — mixed palette (dark / white / cream / gold):**
+    *   *Header band:* Deep Onyx gradient with gold hairline; cream Playfair title; close icon rotates to gold on hover.
+    *   *Canvas & rows:* Warm Cream glass panel (`rgba(250,247,240,.97)` + blur); product rows as white cards with hairline gold dividers and ink text; column labels in AA-tuned gold text (`#77602F`).
+    *   *Totals:* Onyx strip with cream labels and Radiant Gold figures.
+    *   *CTA:* Gold gradient pill with ambient glow and lift on hover.
+    *   Badge counter: gold gradient disc with a scale-pop animation on quantity change; RTL mirrored.
+*   **Mobile (<768px):** Bootstrap toggler restored with an animated hamburger → gold X; the collapse opens as a frosted drawer panel; blur disabled for performance.

@@ -1,0 +1,916 @@
+/**
+ * Duains Fragrances — luxury glass header overrides
+ * ==================================================
+ * Upgrade-safe layer targeting the NATIVE Aimeos storefront DOM
+ * (navbar, catalog-filter-tree, catalog-filter-search, basket-mini,
+ * locale-select, catalog-stage). Loaded LAST in <head> — after the
+ * Aimeos theme CSS, the component CSS (@yield aimeos_header) and the
+ * inline brand block — so every rule below wins the cascade.
+ * The search markup itself is overridden by the local extension in
+ * packages/duains (templates/client/html/catalog/filter/search-body.php).
+ *
+ * Palette per DESIGN.md: white glass canvas, Signature Gold #C5A059,
+ * Radiant Gold #E8D08D, Deep Onyx #0A0A0A, Warm Cream #F4EFE6.
+ */
+
+/* ==========================================================================
+   1. Design tokens (scoped namespace — no clashes with Aimeos --ai-* vars)
+   ========================================================================== */
+
+:root {
+	--du-ink: #161513;
+	--du-ink-soft: #55504a;
+	--du-on-gold: #17130B;
+	--du-gold: #C5A059;
+	--du-gold-deep: #A98543;
+	--du-gold-light: #E8D08D;
+	--du-gold-rgb: 197, 160, 89;
+	--du-gold-text: #77602F;
+	--du-focus-ring: rgba(var(--du-gold-rgb), 0.28);
+
+	--du-glass-bg: rgba(255, 255, 255, 0.55);
+	--du-glass-bg-strong: rgba(255, 255, 255, 0.92);
+	--du-glass-blur: blur(12px) saturate(160%);
+	--du-hairline: rgba(var(--du-gold-rgb), 0.35);
+	--du-header-shadow: 0 12px 40px -18px rgba(22, 21, 19, 0.28);
+
+	--du-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--du-font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+	--du-font-body: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+	--du-bar-h-mobile: 6rem;
+	--du-announce-h: 2.25rem;
+
+	/* Off-canvas basket — mixed dark / white / cream / gold palette */
+	--du-cream: #F4EFE6;
+	--du-cream-deep: #EBE4D4;
+	--du-cream-glass: rgba(250, 247, 240, 0.97);
+	--du-onyx: #0A0A0A;
+	--du-onyx-2: #1A1712;
+	--du-onyx-line: rgba(197, 160, 89, 0.22);
+	--du-drawer-text: #F4EFE6;
+	--du-drawer-muted: #B9B2A6;
+}
+
+/* ==========================================================================
+   2. Canvas — drop the dark strip the default theme paints behind the
+      transparent navbar; the glass header now supplies its own surface.
+      Content keeps the base top margin plus the announcement bar height.
+   ========================================================================== */
+
+body {
+	background-image: none !important;
+	font-family: var(--du-font-body);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+body > .content,
+body .main-section {
+	margin-top: calc(6rem + var(--du-announce-h));
+}
+
+@media (min-width: 992px) {
+	body > .content,
+	body .main-section {
+		margin-top: calc(10rem + var(--du-announce-h));
+	}
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: var(--du-font-display);
+	letter-spacing: 0.01em;
+}
+
+::selection {
+	background: var(--du-gold-light);
+	color: var(--du-onyx, #0A0A0A);
+}
+
+/* ==========================================================================
+   3. Announcement bar — onyx strip above the glass navbar
+      Fixed at the very top; slides away once the page is scrolled
+      (our aimeos.js toggles .is-scrolled on it together with the navbar).
+   ========================================================================== */
+
+.du-announce {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: var(--du-announce-h);
+	z-index: 1029;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	padding: 0 1.25rem;
+	background: linear-gradient(180deg, #0A0A0A, #141109);
+	color: var(--du-gold-light);
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	overflow: hidden;
+	transition: transform 0.35s var(--du-ease);
+}
+
+.du-announce .du-announce__sep {
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: var(--du-gold);
+	flex-shrink: 0;
+}
+
+.du-announce.is-scrolled {
+	transform: translateY(-100%);
+}
+
+.du-announce b {
+	color: var(--du-gold);
+	font-weight: 700;
+}
+
+/* ==========================================================================
+   4. Header shell — sticky glassmorphism below the announcement bar
+      The navbar stays position:fixed / min-height:6rem (10rem on desktop)
+      with its Aimeos shrink-on-scroll behaviour. The blur lives on a
+      ::before so .navbar never becomes the containing block for the
+      position:fixed basket/category drawers.
+   ========================================================================== */
+
+.navbar {
+	top: var(--du-announce-h);
+	background: var(--du-glass-bg);
+	border-bottom: 1px solid transparent;
+	transition: top 0.35s var(--du-ease), background 0.3s var(--du-ease),
+		border-color 0.3s var(--du-ease), box-shadow 0.3s var(--du-ease);
+}
+
+.navbar::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	-webkit-backdrop-filter: var(--du-glass-blur);
+	backdrop-filter: var(--du-glass-blur);
+	pointer-events: none;
+}
+
+/* Scrolled state — Aimeos core adds .scroll (onMenuScroll), our aimeos.js
+   adds .is-scrolled; both drive the same glass elevation. The navbar
+   glides to the very top while the announcement bar slides away. */
+.navbar.is-scrolled,
+.navbar.scroll {
+	top: 0;
+	background: var(--du-glass-bg-strong) !important; /* beats base .navbar.scroll */
+	border-bottom-color: var(--du-hairline);
+	box-shadow: var(--du-header-shadow);
+}
+
+/* Bootstrap color vars so the toggler icon follows the brand */
+.navbar {
+	--bs-navbar-color: var(--du-ink);
+	--bs-navbar-hover-color: var(--du-gold-deep);
+	--bs-navbar-active-color: var(--du-gold-deep);
+}
+
+/* ==========================================================================
+   5. Brand wordmark — ink on glass, gold accent, serif display face
+      (specificity beats the inline brand block in base.blade.php)
+   ========================================================================== */
+
+.navbar .navbar-brand.duains-brand {
+	font-family: var(--du-font-display);
+	font-size: 1.75rem;
+	letter-spacing: 0.22em;
+	color: var(--du-ink);
+	text-shadow: none;
+	transition: color 0.3s var(--du-ease);
+}
+
+.navbar .duains-brand span {
+	color: var(--du-gold);
+}
+
+.navbar .duains-brand img {
+	max-height: 64px;
+	width: auto;
+}
+
+@media (min-width: 992px) {
+	.navbar .duains-brand img {
+		max-height: 80px;
+	}
+}
+
+.navbar .duains-brand:hover {
+	color: var(--du-gold-deep);
+}
+
+/* ==========================================================================
+   6. Account actions & icons — ink by default, gold on hover
+   ========================================================================== */
+
+.navbar-nav .nav-link {
+	color: var(--du-ink);
+	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus-visible {
+	color: var(--du-gold-deep);
+}
+
+.navbar-nav .login > .nav-link::before,
+.navbar-nav .register > .nav-link::before,
+.navbar-nav .profile > .nav-link::before {
+	color: var(--du-ink);
+	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.navbar-nav .login > .nav-link:hover::before,
+.navbar-nav .register > .nav-link:hover::before,
+.navbar-nav .profile > .nav-link:hover::before {
+	color: var(--du-gold-deep);
+	transform: translateY(-1px);
+}
+
+.navbar-nav .nav-item > .nav-link > span.name {
+	display: none; /* base hides the label; keep icon-only actions */
+}
+
+/* Account drop-down — frosted glass panel */
+.navbar-nav .dropdown-menu {
+	background: var(--du-glass-bg-strong);
+	-webkit-backdrop-filter: var(--du-glass-blur);
+	backdrop-filter: var(--du-glass-blur);
+	border: 1px solid var(--du-hairline);
+	border-radius: 0.75rem;
+	box-shadow: var(--du-header-shadow);
+	padding: 0.5rem;
+	min-width: 12rem;
+	margin-top: 0.5rem !important;
+}
+
+.navbar-nav .dropdown-menu .nav-link,
+.navbar-nav .dropdown-menu .dropdown-item {
+	color: var(--du-ink);
+	font-size: 0.95rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.navbar-nav .dropdown-menu .dropdown-item {
+	border-radius: 0.5rem;
+	padding: 0.55rem 0.9rem;
+	transition: background 0.2s var(--du-ease), color 0.2s var(--du-ease);
+}
+
+.navbar-nav .dropdown-menu .dropdown-item:hover,
+.navbar-nav .dropdown-menu .dropdown-item:focus {
+	background: rgba(var(--du-gold-rgb), 0.12);
+	color: var(--du-gold-deep);
+}
+
+.navbar-nav .dropdown-menu button.nav-link {
+	background: none;
+	border: none;
+	width: 100%;
+	text-align: start;
+}
+
+/* ==========================================================================
+   7. Category nav (catalog-filter-tree) — links with hover micro-animations
+   ========================================================================== */
+
+.navbar .catalog-filter-tree {
+	margin-inline-start: auto;
+}
+
+.navbar .catalog-filter-tree .level-1 {
+	align-items: center;
+}
+
+.navbar .catalog-filter-tree a.cat-link,
+.navbar .catalog-filter-tree a.cat-link:link,
+.navbar .catalog-filter-tree a.cat-link:visited {
+	position: relative;
+	color: var(--du-ink);
+	letter-spacing: 0.06em;
+	padding: 0.75rem 0.9rem;
+	transition: color 0.25s var(--du-ease), letter-spacing 0.25s var(--du-ease);
+}
+
+/* Animated gold underline */
+.navbar .catalog-filter-tree a.cat-link::after {
+	content: "";
+	position: absolute;
+	left: 0.9rem;
+	right: 0.9rem;
+	bottom: 0.25rem;
+	height: 1px;
+	background: linear-gradient(90deg, var(--du-gold), var(--du-gold-light));
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.3s var(--du-ease);
+}
+
+[dir="rtl"] .navbar .catalog-filter-tree a.cat-link::after {
+	transform-origin: right;
+}
+
+.navbar .catalog-filter-tree a.cat-link:hover,
+.navbar .catalog-filter-tree a.cat-link:focus-visible {
+	color: var(--du-gold-deep);
+	letter-spacing: 0.1em;
+}
+
+.navbar .catalog-filter-tree a.cat-link:hover::after,
+.navbar .catalog-filter-tree a.cat-link:focus-visible::after {
+	transform: scaleX(1);
+}
+
+.navbar .catalog-filter-tree a.cat-link.active,
+.navbar .catalog-filter-tree a.cat-link.active:hover {
+	color: var(--du-gold-deep);
+}
+
+.navbar .catalog-filter-tree a.cat-link.active::after {
+	transform: scaleX(1);
+}
+
+/* Hover mega/drop-down panels — glass instead of solid dark */
+.navbar .catalog-filter-tree .level-1 > .cat-item.hover > .submenu,
+.navbar .catalog-filter-tree .megamenu .cat-item.hover > .submenu,
+.navbar .catalog-filter-tree .megamenu.cat-item.hover > .submenu {
+	background: var(--du-glass-bg-strong);
+	-webkit-backdrop-filter: var(--du-glass-blur);
+	backdrop-filter: var(--du-glass-blur);
+	border-bottom: 1px solid var(--du-hairline);
+	box-shadow: var(--du-header-shadow);
+}
+
+.navbar .catalog-filter-tree .level-2 > .cat-item > .item-links > .cat-link {
+	color: var(--du-ink);
+}
+
+.navbar .catalog-filter-tree .level-2 > .cat-item > .item-links > .cat-link:hover {
+	color: var(--du-gold-deep);
+}
+
+/* ==========================================================================
+   8. Search — always-visible frosted pill with gold focus ring
+      The template override (packages/duains) drops the slide-toggle
+      block; here we neutralize the base slide-out mechanic (absolute
+      input at right:100%, width:0) and render a fixed pill instead.
+   ========================================================================== */
+
+.navbar .catalog-filter-search .input-group {
+	background: rgba(255, 255, 255, 0.7);
+	border: 1px solid rgba(var(--du-gold-rgb), 0.22);
+	border-radius: 999px;
+	transition: border-color 0.25s var(--du-ease), box-shadow 0.25s var(--du-ease),
+		background 0.25s var(--du-ease);
+}
+
+.navbar .catalog-filter-search .input-group:hover,
+.navbar .catalog-filter-search .input-group:focus-within {
+	background: #fff;
+	border-color: var(--du-gold);
+	box-shadow: 0 0 0 3px var(--du-focus-ring);
+}
+
+/* Neutralize the base slide-out: static position, always-on width */
+.navbar .catalog-filter-search .value {
+	position: static;
+	height: auto;
+	width: 11rem;
+	min-width: 11rem;
+	padding: 0.45rem 0.75rem;
+	background: transparent;
+	color: var(--du-ink);
+	caret-color: var(--du-gold);
+	border-radius: 999px;
+	transition: width 0.3s var(--du-ease);
+}
+
+.navbar .catalog-filter-search .input-group:hover .value,
+.navbar .catalog-filter-search .input-group:focus-within .value {
+	width: 15rem;
+}
+
+.navbar .catalog-filter-search .value::placeholder {
+	color: var(--du-ink-soft);
+	opacity: 1;
+}
+
+.navbar .catalog-filter-search .input-group .btn {
+	background: none;
+	border: none;
+}
+
+.navbar .catalog-filter-search .input-group .btn-search {
+	color: var(--du-gold);
+	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.navbar .catalog-filter-search .input-group .btn-search:hover {
+	color: var(--du-gold-deep);
+	transform: scale(1.08);
+}
+
+/* ==========================================================================
+   9. Locale selector — ink links, frosted panel
+   ========================================================================== */
+
+.navbar .locale-select ul.select-menu a,
+.navbar .locale-select ul.select-menu a:link,
+.navbar .locale-select ul.select-menu a:visited {
+	color: var(--du-ink);
+	letter-spacing: 0.08em;
+}
+
+.navbar .locale-select ul.select-menu a:hover {
+	color: var(--du-gold-deep) !important;
+}
+
+.navbar .locale-select ul.select-menu ul {
+	background: var(--du-glass-bg-strong);
+	-webkit-backdrop-filter: var(--du-glass-blur);
+	backdrop-filter: var(--du-glass-blur);
+	border: 1px solid var(--du-hairline);
+	border-radius: 0.75rem;
+	box-shadow: var(--du-header-shadow);
+}
+
+.navbar .locale-select li.select-dropdown ul.select-dropdown li:hover {
+	background: rgba(var(--du-gold-rgb), 0.12);
+}
+
+/* ==========================================================================
+   10. Mini basket — visible icon trigger, gold badge, mixed-palette drawer
+       (onyx header band, cream canvas, white rows, onyx totals, gold CTA)
+   ========================================================================== */
+
+/* Trigger — explicit circle button so the icon always reads on the glass bar */
+.basket-mini .menu {
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	text-align: center;
+	padding: 0;
+}
+
+.basket-mini .menu:after {
+	font-size: 1.45rem;
+	line-height: 1;
+	color: var(--du-ink);
+	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.basket-mini .menu:hover:after {
+	color: var(--du-gold-deep);
+	transform: translateY(-1px);
+}
+
+.basket-mini .menu:hover {
+	background: rgba(var(--du-gold-rgb), 0.1);
+}
+
+/* Badge — gold gradient disc */
+.basket-mini-main .quantity {
+	background: linear-gradient(135deg, var(--du-gold-light), var(--du-gold));
+	color: var(--du-on-gold);
+	font-weight: 700;
+	font-size: 0.72rem;
+	min-width: 1.35rem;
+	height: 1.35rem;
+	line-height: 1.35rem;
+	padding: 0 0.3rem;
+	display: inline-block;
+	text-align: center;
+	border-radius: 50%;
+	top: 0.05rem;
+	right: 0.05rem;
+	z-index: 2;
+}
+
+[dir="rtl"] .basket-mini-main .quantity {
+	right: unset;
+	left: 0.05rem;
+}
+
+.basket-mini-main .quantity.pop {
+	animation: du-badge-pop 0.45s var(--du-ease);
+}
+
+@keyframes du-badge-pop {
+	0% { transform: scale(1); }
+	35% { transform: scale(1.4); }
+	100% { transform: scale(1); }
+}
+
+/* Drawer — warm cream glass panel */
+.basket-mini .zeynep {
+	background: var(--du-cream-glass);
+	-webkit-backdrop-filter: var(--du-glass-blur);
+	backdrop-filter: var(--du-glass-blur);
+	border-inline-start: 1px solid var(--du-hairline);
+	box-shadow: -18px 0 50px -30px rgba(22, 21, 19, 0.35);
+}
+
+[dir="rtl"] .basket-mini .zeynep {
+	border-inline-start: none;
+	border-inline-end: 1px solid var(--du-hairline);
+	box-shadow: 18px 0 50px -30px rgba(22, 21, 19, 0.35);
+}
+
+/* Header band — deep onyx with gold hairline */
+.basket-mini .zeynep .header {
+	background: linear-gradient(180deg, var(--du-onyx), var(--du-onyx-2));
+	color: var(--du-drawer-text);
+	border-bottom: 1px solid var(--du-onyx-line);
+}
+
+.basket-mini .zeynep .header .name {
+	font-family: var(--du-font-display);
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--du-drawer-text);
+}
+
+.basket-mini .zeynep .header .close,
+.basket-mini .zeynep .header .close:hover {
+	color: var(--du-drawer-muted);
+	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.basket-mini .zeynep .header .close:hover {
+	color: var(--du-gold);
+	transform: rotate(90deg);
+}
+
+/* Content — cream canvas, white rows, gold hairlines */
+.basket-mini-product .basket {
+	margin: 1rem;
+}
+
+.basket-mini-product .basket-header.row,
+.basket-mini-product .product-item.row,
+.basket-mini-product .delivery.row,
+.basket-mini-product .total.row {
+	border-color: var(--du-hairline);
+}
+
+.basket-mini-product .basket-header {
+	font-family: var(--du-font-body);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	font-size: 0.72rem;
+	color: var(--du-gold-text);
+}
+
+.basket-mini-product .product-item.row {
+	background: #fff;
+	border-radius: 0.75rem;
+	margin-bottom: 0.5rem;
+	box-shadow: 0 6px 18px -12px rgba(22, 21, 19, 0.25);
+}
+
+.basket-mini-product .product-item .name {
+	color: var(--du-ink);
+	font-weight: 500;
+}
+
+.basket-mini-product .delete {
+	color: var(--du-gold-deep);
+	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.basket-mini-product .delete:hover {
+	color: var(--du-gold);
+	transform: scale(1.15);
+}
+
+.basket-mini-product .delivery.row {
+	color: var(--du-ink-soft);
+}
+
+/* Totals — onyx strip, cream + gold figures */
+.basket-mini-product .total {
+	background: linear-gradient(180deg, var(--du-onyx), var(--du-onyx-2));
+	color: var(--du-drawer-text);
+	border-radius: 0.75rem;
+	border: none;
+}
+
+.basket-mini-product .total .name:before {
+	color: var(--du-gold);
+}
+
+.basket-mini-product .total .price {
+	color: var(--du-gold-light);
+	font-weight: 700;
+}
+
+/* Basket CTA — solid gold per DESIGN.md */
+.basket-mini-product .to-basket .btn-primary {
+	background: linear-gradient(135deg, var(--du-gold-light), var(--du-gold));
+	border: none;
+	color: var(--du-on-gold);
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	border-radius: 999px;
+	box-shadow: 0 8px 24px -10px rgba(var(--du-gold-rgb), 0.55);
+	transition: box-shadow 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.basket-mini-product .to-basket .btn-primary:hover {
+	box-shadow: 0 12px 28px -10px rgba(var(--du-gold-rgb), 0.7);
+	transform: translateY(-1px);
+	color: var(--du-on-gold);
+}
+
+/* ==========================================================================
+   11. Category drawer (mobile zeynep) — frosted white, gold accents
+   ========================================================================== */
+
+.catalog-filter-tree .zeynep,
+.catalog-filter-tree .zeynep .submenu {
+	background: var(--du-glass-bg-strong);
+	-webkit-backdrop-filter: var(--du-glass-blur);
+	backdrop-filter: var(--du-glass-blur);
+}
+
+.catalog-filter-tree .zeynep .header {
+	background: linear-gradient(180deg, rgba(250, 247, 240, 0.95), rgba(255, 255, 255, 0.9));
+	color: var(--du-ink);
+	border-bottom: 1px solid var(--du-hairline);
+}
+
+.catalog-filter-tree .zeynep .header .name {
+	font-family: var(--du-font-display);
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--du-ink);
+}
+
+.catalog-filter-tree .zeynep .back,
+.catalog-filter-tree .zeynep .close {
+	color: var(--du-ink);
+	transition: color 0.25s var(--du-ease);
+}
+
+.catalog-filter-tree .zeynep .back:hover,
+.catalog-filter-tree .zeynep .close:hover {
+	color: var(--du-gold-deep);
+}
+
+.catalog-filter-tree .zeynep .next {
+	color: var(--du-gold);
+}
+
+.catalog-filter-tree .zeynep .item-links a.cat-link,
+.catalog-filter-tree .zeynep .item-links a.cat-link:link,
+.catalog-filter-tree .zeynep .item-links a.cat-link:visited {
+	color: var(--du-ink);
+	letter-spacing: 0.04em;
+	transition: color 0.2s var(--du-ease), padding-inline-start 0.2s var(--du-ease);
+}
+
+.catalog-filter-tree .zeynep .item-links a.cat-link:hover,
+.catalog-filter-tree .zeynep .item-links a.cat-link:focus-visible {
+	color: var(--du-gold-deep);
+	padding-inline-start: 1.4rem;
+}
+
+/* Mobile tree trigger — ink burger */
+.navbar .catalog-filter-tree .menu {
+	color: var(--du-ink) !important;
+	transition: color 0.25s var(--du-ease);
+}
+
+.navbar .catalog-filter-tree .menu:hover {
+	color: var(--du-gold-deep) !important;
+}
+
+/* ==========================================================================
+   12. Mobile < 768px — restore the Bootstrap toggler, drawer-style collapse
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Re-enable the toggler the default theme hides */
+	.navbar-expand-md .navbar-toggler {
+		display: inline-block !important;
+	}
+
+	/* Default theme forces the collapse open — hide it again */
+	.navbar-expand-md .navbar-collapse {
+		display: none !important;
+		flex-basis: auto;
+	}
+
+	.navbar-expand-md .navbar-collapse.show,
+	.navbar-expand-md .navbar-collapse.collapsing {
+		display: flex !important;
+	}
+
+	/* Collapse becomes a frosted panel below the bar */
+	.navbar-expand-md .navbar-collapse {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding: 1rem 1.25rem 1.25rem;
+		background: var(--du-glass-bg-strong);
+		-webkit-backdrop-filter: var(--du-glass-blur);
+		backdrop-filter: var(--du-glass-blur);
+		border-top: 1px solid var(--du-hairline);
+		border-bottom: 1px solid var(--du-hairline);
+		box-shadow: var(--du-header-shadow);
+		max-height: calc(100vh - var(--du-bar-h-mobile));
+		overflow-y: auto;
+		z-index: 1029;
+	}
+
+	.navbar .catalog-filter-tree {
+		margin-inline-start: 0;
+	}
+
+	.navbar .catalog-filter-tree .level-1 {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.navbar .catalog-filter-tree a.cat-link,
+	.navbar .catalog-filter-tree a.cat-link:link,
+	.navbar .catalog-filter-tree a.cat-link:visited {
+		padding: 0.55rem 0.25rem;
+		display: block;
+	}
+
+	.navbar .catalog-filter-tree a.cat-link::after {
+		display: none;
+	}
+
+	/* Search pill keeps an always-tappable footprint */
+	.navbar .catalog-filter-search .input-group .btn {
+		min-width: 2.75rem;
+	}
+
+	.navbar .catalog-filter-search .value,
+	.navbar .catalog-filter-search .input-group:hover .value,
+	.navbar .catalog-filter-search .input-group:focus-within .value {
+		width: 8rem;
+		min-width: 8rem;
+		padding: 0.4rem 0.6rem;
+	}
+
+	/* Brand scales down for the smaller bar */
+	.navbar .navbar-brand.duains-brand {
+		font-size: 1.4rem;
+	}
+
+	.navbar .duains-brand img {
+		max-height: 52px;
+	}
+
+	/* Announcement bar collapses to a single line on small screens */
+	.du-announce {
+		gap: 0.5rem;
+		font-size: 0.6rem;
+		letter-spacing: 0.16em;
+		padding: 0 0.75rem;
+	}
+
+	.du-announce span:nth-child(3) {
+		display: none;
+	}
+
+	/* No blur on small screens (perf) — solid glass */
+	.navbar::before {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+}
+
+/* Animated hamburger → X toggler */
+.navbar-toggler {
+	border: 0;
+	padding: 0.375rem 0.5rem;
+	border-radius: 0.5rem;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:focus-visible {
+	box-shadow: 0 0 0 3px var(--du-focus-ring);
+}
+
+.navbar-toggler-icon {
+	background-image: none !important;
+	position: relative;
+	width: 1.4rem;
+	height: 1.1rem;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: var(--du-ink);
+	border-radius: 2px;
+	transition: top 0.3s var(--du-ease), transform 0.3s var(--du-ease),
+		background 0.3s var(--du-ease);
+}
+
+.navbar-toggler-icon::before {
+	top: 0;
+}
+
+.navbar-toggler-icon::after {
+	top: calc(100% - 2px);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+	top: 50%;
+	transform: translateY(-50%) rotate(45deg);
+	background: var(--du-gold);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+	top: 50%;
+	transform: translateY(-50%) rotate(-45deg);
+	background: var(--du-gold);
+}
+
+/* ==========================================================================
+   13. Catalog stage — frosted breadcrumb trail
+   ========================================================================== */
+
+.catalog-stage-breadcrumb {
+	color: var(--du-ink-soft);
+	font-size: 0.85rem;
+	letter-spacing: 0.06em;
+}
+
+.catalog-stage-breadcrumb .title {
+	font-family: var(--du-font-display);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--du-ink);
+}
+
+.catalog-stage-breadcrumb a {
+	color: var(--du-ink);
+	transition: color 0.2s var(--du-ease);
+}
+
+.catalog-stage-breadcrumb a:hover,
+.catalog-stage-breadcrumb a:focus-visible {
+	color: var(--du-gold-deep);
+}
+
+.catalog-stage-breadcrumb li:last-child a {
+	color: var(--du-gold-deep);
+}
+
+/* ==========================================================================
+   14. Motion preferences
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.navbar,
+	.navbar::before,
+	.du-announce,
+	.navbar-nav .nav-link,
+	.navbar .catalog-filter-tree a.cat-link,
+	.navbar .catalog-filter-search .input-group,
+	.navbar .catalog-filter-search .value,
+	.basket-mini .menu,
+	.basket-mini .zeynep,
+	.basket-mini .zeynep .header .close {
+		transition: none !important;
+		animation: none !important;
+	}
+
+	.du-announce.is-scrolled {
+		transform: none;
+	}
+
+	.basket-mini-main .quantity.pop {
+		animation: none;
+	}
+}

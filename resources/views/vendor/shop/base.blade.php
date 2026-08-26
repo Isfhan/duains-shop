@@ -37,7 +37,7 @@ try {
 		<title>Duains</title>
 
 		@if( config('app.debug') !== true )
-			<meta http-equiv="Content-Security-Policy" content="base-uri 'self'; default-src 'self' 'nonce-{{ app( 'aimeos.context' )->get()->nonce() }}'; {{ config( 'shop.csp.frontend', 'style-src \'unsafe-inline\' \'self\'; img-src \'self\' data: https://aimeos.org; frame-src https://www.youtube.com https://player.vimeo.com' ) }}">
+			<meta http-equiv="Content-Security-Policy" content="base-uri 'self'; default-src 'self' 'nonce-{{ app( 'aimeos.context' )->get()->nonce() }}'; {{ config( 'shop.csp.frontend', 'style-src \'unsafe-inline\' \'self\' https://fonts.googleapis.com; font-src \'self\' data: https://fonts.gstatic.com; img-src \'self\' data: https://aimeos.org; frame-src https://www.youtube.com https://player.vimeo.com' ) }}">
 		@endif
 
 		@if( in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) )
@@ -47,6 +47,11 @@ try {
 		@endif
 		<link type="text/css" rel="stylesheet" href="{{ asset('vendor/shop/themes/default/aimeos.css?v=' . config( 'shop.version', 1 ) ) }}">
 		<link type="text/css" rel="stylesheet" href="{{ asset('css/duains-shop.css?v=' . config( 'shop.version', 1 ) ) }}">
+
+		<!-- Duains luxury header overrides (fonts + override stylesheet) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 		<link rel="icon" href="{{ asset('duains-favicon.svg') }}" type="image/svg+xml">
 
@@ -104,8 +109,17 @@ try {
 		<link rel="preload" href="{{ asset('vendor/shop/themes/default/assets/roboto-condensed-v19-latin-regular.woff2') }}" as="font" type="font/woff2" crossorigin>
 		<link rel="preload" href="{{ asset('vendor/shop/themes/default/assets/roboto-condensed-v19-latin-700.woff2') }}" as="font" type="font/woff2" crossorigin>
 		<link rel="preload" href="{{ asset('vendor/shop/themes/default/assets/bootstrap-icons.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+		<!-- Duains luxury header overrides — LAST in head so they win the cascade
+		     over the Aimeos theme CSS AND the component CSS injected via @yield('aimeos_header') -->
+		<link type="text/css" rel="stylesheet" href="{{ asset('mytheme/aimeos.css?v=' . config( 'shop.version', 1 ) ) }}">
 	</head>
 	<body class="{{ $page ?? '' }}">
+		<div class="du-announce" role="note">
+			<span>Complimentary delivery on orders over PKR 5,000</span>
+			<span class="du-announce__sep" aria-hidden="true"></span>
+			<span>Signature gift wrapping on every order</span>
+		</div>
 		<nav class="navbar navbar-expand-md navbar-top">
 			<a class="navbar-brand duains-brand" href="/" title="Duains">
 				@if( $siteLogoUrl )
@@ -206,6 +220,8 @@ try {
 		<!-- Scripts -->
 		<script src="{{ asset('vendor/shop/themes/default/app.js?v=' . config( 'shop.version', 1 ) ) }}"></script>
 		<script src="{{ asset('vendor/shop/themes/default/aimeos.js?v=' . config( 'shop.version', 1 ) ) }}"></script>
+		<!-- Duains luxury header overrides (must load AFTER the Aimeos theme JS) -->
+		<script src="{{ asset('mytheme/aimeos.js?v=' . config( 'shop.version', 1 ) ) }}"></script>
 		@yield('aimeos_scripts')
 	</body>
 </html>
