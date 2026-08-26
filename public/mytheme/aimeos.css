@@ -943,7 +943,318 @@ h1, h2, h3, h4, h5 {
 }
 
 /* ==========================================================================
-   14. Motion preferences
+   14. Footer — deep onyx luxury anchor
+       Onyx gradient canvas, gold hairlines, Playfair headings with gold
+       rules, cream/muted links with gold hover drift, circular social
+       buttons, trust strip bottom bar and a gold back-to-top circle.
+   ========================================================================== */
+
+footer {
+	position: relative;
+	background: linear-gradient(180deg, #121212 0%, #0d0d0d 100%);
+	border-top: 1px solid var(--du-hairline);
+	color: var(--du-drawer-muted);
+	padding: 4.5rem 0 0;
+	overflow: hidden;
+}
+
+footer::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: radial-gradient(1100px 420px at 50% -60px, rgba(var(--du-gold-rgb), 0.09), transparent 70%);
+}
+
+.du-footer-main {
+	align-items: flex-start;
+}
+
+.du-footer-brand .footer-block,
+.du-footer-links .footer-block {
+	display: block;
+	margin: 0 0 3rem;
+}
+
+@media (min-width: 768px) {
+	footer .footer-left,
+	footer .footer-center,
+	footer .footer-right {
+		text-align: start;
+	}
+}
+
+/* Small & mobile (≤991px): brand column fully centered — column, links,
+   logo image and tagline all aligned to the middle */
+@media (max-width: 991px) {
+	.du-footer-brand,
+	.du-footer-brand .footer-block {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		text-align: center;
+	}
+
+	.du-footer-brand .duains-brand.footer {
+		justify-content: center;
+	}
+
+	.du-footer-brand .duains-brand-img {
+		margin-inline: auto;
+	}
+}
+
+/* Tablet (768–991px): brand spans full width and stays centered,
+   link columns sit side by side below it */
+@media (min-width: 768px) and (max-width: 991px) {
+	.du-footer-brand .footer-block {
+		margin-bottom: 3.5rem;
+	}
+
+	footer .social {
+		justify-content: center;
+	}
+}
+
+/* Brand column */
+footer .duains-brand.footer {
+	font-family: var(--du-font-display);
+	font-size: 1.75rem;
+	letter-spacing: 0.22em;
+	color: #F5F1E8;
+}
+
+footer .duains-brand.footer span {
+	color: var(--du-gold);
+}
+
+footer .duains-brand.footer .duains-brand-img {
+	max-height: 140px;
+	width: auto;
+}
+
+.du-footer-tagline {
+	margin: 1.25rem 0 0;
+	font-size: 0.78rem;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+	color: #8A8375;
+}
+
+/* Social circles — icon-only, glyphs come from the theme's bootstrap-icons rules */
+footer .social {
+	display: flex;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+footer .social p {
+	margin: 0;
+}
+
+footer .social .sm {
+	width: 42px;
+	height: 42px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 1px solid var(--du-onyx-line);
+	background: rgba(255, 255, 255, 0.03);
+	color: #EDE8DA;
+	font-size: 0;
+	text-decoration: none;
+	transition: background 0.25s var(--du-ease), color 0.25s var(--du-ease),
+		border-color 0.25s var(--du-ease), transform 0.25s var(--du-ease),
+		box-shadow 0.25s var(--du-ease);
+}
+
+footer .footer-right .social .sm::before {
+	font-size: 1.15rem;
+	line-height: 1;
+	margin-right: 0;
+	vertical-align: middle;
+}
+
+footer .social .sm:hover,
+footer .social .sm:focus-visible {
+	background: linear-gradient(135deg, var(--du-gold-light), var(--du-gold));
+	border-color: transparent;
+	color: var(--du-on-gold);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px -10px rgba(var(--du-gold-rgb), 0.6);
+}
+
+/* Link columns */
+footer h2 {
+	font-family: var(--du-font-display);
+	font-size: 0.95rem;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: #F5F1E8;
+	padding-bottom: 0.9rem;
+	margin-bottom: 1.25rem;
+	position: relative;
+}
+
+footer h2::after {
+	content: "";
+	position: absolute;
+	inset-inline-start: 0;
+	bottom: 0;
+	width: 2.5rem;
+	height: 1px;
+	background: linear-gradient(90deg, var(--du-gold), transparent);
+}
+
+footer p {
+	margin-bottom: 0.25rem;
+}
+
+footer p a {
+	display: inline-block;
+	letter-spacing: 0.08em;
+	color: var(--du-drawer-muted);
+	padding: 0.45rem 0;
+	transition: color 0.25s var(--du-ease), padding-inline-start 0.25s var(--du-ease);
+}
+
+footer p a:hover,
+footer p a:focus-visible {
+	color: var(--du-gold-light);
+	padding-inline-start: 0.35rem;
+}
+
+/* Bottom bar — copyright + trust strip with gold dot separators */
+.du-footer-bottom {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem 1.25rem;
+	padding: 1.5rem 0 1.75rem;
+	border-top: 1px solid var(--du-onyx-line);
+	font-size: 0.66rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: #8A8375;
+}
+
+.du-footer-copy {
+	color: var(--du-drawer-muted);
+}
+
+.du-footer-trust {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	flex-wrap: wrap;
+}
+
+.du-footer-dots {
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: var(--du-gold);
+	flex-shrink: 0;
+}
+
+/* Back-to-top — gold circle */
+.back-to-top {
+	background: linear-gradient(135deg, var(--du-gold-light), var(--du-gold));
+	color: var(--du-on-gold);
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	padding: 0;
+	box-shadow: 0 10px 28px -12px rgba(var(--du-gold-rgb), 0.6);
+	transition: box-shadow 0.25s var(--du-ease), transform 0.25s var(--du-ease);
+}
+
+.back-to-top .top-icon:before {
+	font-size: 150%;
+	line-height: 1;
+	vertical-align: middle;
+}
+
+.back-to-top:hover {
+	background: linear-gradient(135deg, var(--du-gold), var(--du-gold-deep));
+	color: var(--du-on-gold);
+	box-shadow: 0 14px 32px -12px rgba(var(--du-gold-rgb), 0.75);
+}
+
+[dir="rtl"] .back-to-top {
+	right: unset;
+	left: 1.5rem;
+}
+
+/* Mobile — stacked, centered */
+@media (max-width: 767px) {
+footer {
+	padding-top: 3.5rem;
+		text-align: center;
+	}
+
+	.du-footer-main {
+		justify-content: center;
+	}
+
+	.du-footer-brand .footer-block,
+	.du-footer-links .footer-block {
+		margin-bottom: 2.5rem;
+	}
+
+	footer .duains-brand.footer .duains-brand-img {
+		max-height: 112px;
+	}
+
+	/* Brand column — centered via the ≤991px block above */
+	.du-footer-tagline {
+		font-size: 0.8rem;
+	}
+
+	footer h2::after {
+		inset-inline-start: 50%;
+		transform: translateX(-50%);
+	}
+
+	footer .social {
+		justify-content: center;
+	}
+
+	.du-footer-bottom {
+		justify-content: center;
+		text-align: center;
+	}
+}
+
+/* Very small screens (<400px) — tighten tracking so nothing overflows */
+@media (max-width: 399px) {
+	.du-footer-tagline {
+		letter-spacing: 0.16em;
+	}
+
+	footer .duains-brand.footer .duains-brand-img {
+		max-height: 92px;
+	}
+
+	.du-footer-bottom {
+		font-size: 0.58rem;
+		letter-spacing: 0.14em;
+		gap: 0.5rem;
+	}
+
+	.du-footer-trust {
+		gap: 0.45rem;
+	}
+}
+
+/* ==========================================================================
+   15. Motion preferences
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -956,7 +1267,10 @@ h1, h2, h3, h4, h5 {
 	.navbar .catalog-filter-search .value,
 	.basket-mini .menu,
 	.basket-mini .zeynep,
-	.basket-mini .zeynep .header .close {
+	.basket-mini .zeynep .header .close,
+	footer .social .sm,
+	footer p a,
+	.back-to-top {
 		transition: none !important;
 		animation: none !important;
 	}

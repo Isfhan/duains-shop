@@ -168,28 +168,9 @@ try {
 
 
 		<footer>
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-8">
-						<div class="row">
-							<div class="col-sm-6 footer-left">
-								<div class="footer-block">
-									<h2 class="pb-3" aria-label="{{ __('Legal information') }}">{{ __( 'LEGAL' ) }}</h2>
-									<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'terms']) }}">{{ __( 'Terms & Conditions' ) }}</a></p>
-									<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'privacy']) }}">{{ __( 'Privacy Notice' ) }}</a></p>
-									<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'cancel']) }}">{{ __( 'Cancellation' ) }}</a></p>
-								</div>
-							</div>
-							<div class="col-sm-6 footer-center">
-								<div class="footer-block">
-									<h2 class="pb-3" aria-label="{{ __('About the company') }}">{{ __( 'ABOUT US' ) }}</h2>
-									<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'contact']) }}">{{ __( 'Contact us' ) }}</a></p>
-									<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'about']) }}">{{ __( 'Company' ) }}</a></p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 footer-right">
+			<div class="container-xxl">
+				<div class="row du-footer-main">
+					<div class="col-lg-4 col-md-12 footer-right du-footer-brand">
 						<div class="footer-block">
 							<a class="duains-brand footer" href="/" title="Duains">
 								@if( $siteLogoUrl )
@@ -198,6 +179,7 @@ try {
 									DUAINS<span>.shop</span>
 								@endif
 							</a>
+							<p class="du-footer-tagline">ELEGANCE IN EVERY SCENT</p>
 							<div class="social" aria-label="{{ __('Social media links') }}">
 								<p><a href="#" class="sm facebook" title="Facebook" rel="noopener">Facebook</a></p>
 								<p><a href="#" class="sm twitter" title="Twitter" rel="noopener">Twitter</a></p>
@@ -206,6 +188,30 @@ try {
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-4 col-md-6 footer-left du-footer-links">
+						<div class="footer-block">
+							<h2 class="pb-3" aria-label="{{ __('Legal information') }}">{{ __( 'LEGAL' ) }}</h2>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'terms']) }}">{{ __( 'Terms & Conditions' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'privacy']) }}">{{ __( 'Privacy Notice' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'cancel']) }}">{{ __( 'Cancellation' ) }}</a></p>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6 footer-center du-footer-links">
+						<div class="footer-block">
+							<h2 class="pb-3" aria-label="{{ __('About the company') }}">{{ __( 'ABOUT US' ) }}</h2>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'contact']) }}">{{ __( 'Contact us' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'about']) }}">{{ __( 'Company' ) }}</a></p>
+						</div>
+					</div>
+				</div>
+
+				<div class="du-footer-bottom">
+					<span class="du-footer-copy">&copy; {{ date('Y') }} Duains. {{ __( 'All rights reserved.' ) }}</span>
+					<span class="du-footer-trust">
+						<span>{{ __( 'Secure checkout' ) }}</span><span class="du-footer-dots" aria-hidden="true"></span>
+						<span>{{ __( 'Fast, insured delivery' ) }}</span><span class="du-footer-dots" aria-hidden="true"></span>
+						<span>{{ __( 'Signature gift wrapping' ) }}</span>
+					</span>
 				</div>
 			</div>
 		</footer>
