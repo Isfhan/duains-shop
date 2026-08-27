@@ -88,28 +88,63 @@
 		},
 
 		/**
-		 * Basket drawer — lock body scroll while open, close via ESC.
-		 * Watches the .opened class set by the Aimeos core so the core's
-		 * open/close logic keeps full control.
+		 * Mobile drawer — the navbar hamburger opens the category
+		 * off-canvas drawer directly (no intermediate panel). Proxies the
+		 * core .menu click so onShowCategories keeps full control.
 		 */
-		applyBasketDrawer: function() {
-			this.run('basketDrawer', function() {
-				var drawer = $('.basket-mini .zeynep');
-				if (!drawer || typeof MutationObserver === 'undefined') { return; }
+		applyMobileDrawer: function() {
+			this.run('mobileDrawer', function() {
+				var toggler = $('.navbar-toggler');
+				var menu = $('.catalog-filter-tree > a.menu');
+				if (!toggler || !menu) { return; }
+
+				/* Keep the core anchor from jumping to "#" in both flows */
+				menu.addEventListener('click', function(e) { e.preventDefault(); });
+
+				toggler.addEventListener('click', function(e) {
+					e.preventDefault();
+					menu.click();
+				});
+			});
+		},
+
+		/**
+		 * Drawers (basket + category) — lock body scroll while either is
+		 * open, close via ESC, and sync the toggler's aria-expanded (drives
+		 * the hamburger -> X animation). Watches the .opened class set by
+		 * the Aimeos core so open/close logic stays fully core-owned.
+		 */
+		applyDrawers: function() {
+			this.run('drawers', function() {
+				var basket = $('.basket-mini .zeynep');
+				var tree = $('.catalog-filter-tree .zeynep');
+				var toggler = $('.navbar-toggler');
+				if (!basket && !tree || typeof MutationObserver === 'undefined') { return; }
 
 				var sync = function() {
-					d.body.classList.toggle('du-drawer-open', drawer.classList.contains('opened'));
+					var open = (basket && basket.classList.contains('opened'))
+						|| (tree && tree.classList.contains('opened'));
+					d.body.classList.toggle('du-drawer-open', open);
+					if (toggler) {
+						toggler.setAttribute('aria-expanded', open ? 'true' : 'false');
+					}
 				};
 
-				new MutationObserver(sync).observe(drawer, {
-					attributes: true,
-					attributeFilter: ['class']
+				[basket, tree].forEach(function(drawer) {
+					if (!drawer) { return; }
+					new MutationObserver(sync).observe(drawer, {
+						attributes: true,
+						attributeFilter: ['class']
+					});
 				});
 
 				d.addEventListener('keydown', function(e) {
-					if (e.key === 'Escape' && drawer.classList.contains('opened')) {
-						var overlay = $('.basket-mini .aimeos-overlay-offscreen');
-						if (overlay) { overlay.click(); }
+					var open = (basket && basket.classList.contains('opened'))
+						|| (tree && tree.classList.contains('opened'));
+					if (e.key === 'Escape' && open) {
+						var overlay = $('.catalog-filter-tree .aimeos-overlay-offscreen')
+							|| $('.basket-mini .aimeos-overlay-offscreen');
+						if (overlay) { overlay.click(); } /* core closes all drawers */
 					}
 				});
 
@@ -140,7 +175,8 @@
 		init: function() {
 			this.applyScrollState();
 			this.applySearch();
-			this.applyBasketDrawer();
+			this.applyMobileDrawer();
+			this.applyDrawers();
 			this.applyBadgePop();
 		}
 	};
@@ -164,15 +200,18 @@
 	}
 
 	function boot() {
-		/* Scroll state rides on the core navbar handler */
-		decorate('AimeosPage', DuainsHeader.applyScrollState);
+		/* Scroll state + hamburger->drawer ride on the core navbar handler */
+		decorate('AimeosPage', function() {
+			DuainsHeader.applyScrollState();
+			DuainsHeader.applyMobileDrawer();
+		});
 
 		/* Search focus rides on the filter/search handler */
 		decorate('AimeosCatalogFilter', DuainsHeader.applySearch);
 
-		/* Drawer + badge polish ride on the mini basket handler */
+		/* Drawer lock and badge pop ride on the basket handler */
 		decorate('AimeosBasketMini', function() {
-			DuainsHeader.applyBasketDrawer();
+			DuainsHeader.applyDrawers();
 			DuainsHeader.applyBadgePop();
 		});
 

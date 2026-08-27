@@ -134,16 +134,15 @@ h1, h2, h3, h4, h5 {
 }
 
 /* ==========================================================================
-   4. Header shell — sticky glassmorphism below the announcement bar
+   4. Header shell — sticky white bar below the announcement bar
       The navbar stays position:fixed / min-height:6rem (10rem on desktop)
-      with its Aimeos shrink-on-scroll behaviour. The blur lives on a
-      ::before so .navbar never becomes the containing block for the
-      position:fixed basket/category drawers.
+      with its Aimeos shrink-on-scroll behaviour. Solid white surface, with
+      the scrolled state adding a gold hairline and soft shadow.
    ========================================================================== */
 
 .navbar {
 	top: var(--du-announce-h);
-	background: var(--du-glass-bg);
+	background: #ffffff;
 	border-bottom: 1px solid transparent;
 	transition: top 0.35s var(--du-ease), background 0.3s var(--du-ease),
 		border-color 0.3s var(--du-ease), box-shadow 0.3s var(--du-ease);
@@ -154,8 +153,8 @@ h1, h2, h3, h4, h5 {
 	position: absolute;
 	inset: 0;
 	z-index: -1;
-	-webkit-backdrop-filter: var(--du-glass-blur);
-	backdrop-filter: var(--du-glass-blur);
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
 	pointer-events: none;
 }
 
@@ -165,7 +164,7 @@ h1, h2, h3, h4, h5 {
 .navbar.is-scrolled,
 .navbar.scroll {
 	top: 0;
-	background: var(--du-glass-bg-strong) !important; /* beats base .navbar.scroll */
+	background: #ffffff !important; /* beats base .navbar.scroll */
 	border-bottom-color: var(--du-hairline);
 	box-shadow: var(--du-header-shadow);
 }
@@ -342,15 +341,75 @@ h1, h2, h3, h4, h5 {
 	transform: scaleX(1);
 }
 
-/* Hover mega/drop-down panels — glass instead of solid dark */
+/* Hover mega/drop-down panels — glass instead of solid dark.
+   :hover / :focus-within fallbacks keep the dropdowns working on touch
+   devices at every width; the core JS adds .hover on mouseover. */
+.navbar .catalog-filter-tree .level-1 > .cat-item:hover > .submenu,
+.navbar .catalog-filter-tree .level-1 > .cat-item:focus-within > .submenu,
 .navbar .catalog-filter-tree .level-1 > .cat-item.hover > .submenu,
+.navbar .catalog-filter-tree .megamenu .cat-item:hover > .submenu,
+.navbar .catalog-filter-tree .megamenu .cat-item:focus-within > .submenu,
 .navbar .catalog-filter-tree .megamenu .cat-item.hover > .submenu,
+.navbar .catalog-filter-tree .megamenu.cat-item:hover > .submenu,
+.navbar .catalog-filter-tree .megamenu.cat-item:focus-within > .submenu,
 .navbar .catalog-filter-tree .megamenu.cat-item.hover > .submenu {
 	background: var(--du-glass-bg-strong);
 	-webkit-backdrop-filter: var(--du-glass-blur);
 	backdrop-filter: var(--du-glass-blur);
 	border-bottom: 1px solid var(--du-hairline);
 	box-shadow: var(--du-header-shadow);
+}
+
+/* CSS-only reveal fallback for the desktop dropdowns (additive, the JS
+   keeps its own .hover class) */
+@media (min-width: 992px) {
+	.navbar .catalog-filter-tree .level-1 > .cat-item:hover > .submenu,
+	.navbar .catalog-filter-tree .level-1 > .cat-item:focus-within > .submenu {
+		display: flex;
+	}
+}
+
+/* Megamenu band — anchored under the glass navbar instead of the viewport.
+   The base theme uses position:fixed without a top value, which breaks the
+   panel as soon as the page is scrolled (static position leaves the
+   viewport). Only the top-level megamenu entry is targeted. */
+@media (min-width: 992px) {
+	.navbar .catalog-filter-tree .level-1 > .cat-item.megamenu:hover > .submenu,
+	.navbar .catalog-filter-tree .level-1 > .cat-item.megamenu:focus-within > .submenu,
+	.navbar .catalog-filter-tree .level-1 > .cat-item.megamenu.hover > .submenu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		padding: 2.5rem 2rem;
+	}
+
+	/* Megamenu grid — replaces CSS multi-columns. column-count +
+	   break-inside:avoid inside an absolutely positioned band is a known
+	   browser overlap bug (all items collapse onto one line). A wrapping
+	   flex grid keeps the multi-column intent with zero overlap. */
+	.navbar .catalog-filter-tree .megamenu .level-2 {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem 3rem;
+		column-count: auto;
+		width: auto;
+		max-width: 60rem;
+		margin-inline: auto;
+	}
+
+	.navbar .catalog-filter-tree .megamenu .level-2 > .cat-item {
+		flex: 0 1 15rem;
+		max-width: 15rem;
+		margin-bottom: 0;
+		break-inside: auto;
+	}
+}
+
+/* Drawer dim layer — sits above the navbar content so the whole page
+   (including the header) darkens behind an open offscreen drawer */
+.aimeos-overlay-offscreen {
+	z-index: 1028;
 }
 
 .navbar .catalog-filter-tree .level-2 > .cat-item > .item-links > .cat-link {
@@ -702,23 +761,123 @@ h1, h2, h3, h4, h5 {
 }
 
 /* ==========================================================================
-   12. Mobile < 768px — restore the Bootstrap toggler, drawer-style collapse
+   12. Tablet (768–991px) — desktop-style inline nav
+       The base theme only builds the horizontal tree + hover dropdowns at
+       ≥992px; below that submenus render as visible inline blocks. This
+       extends the desktop behavior down to 768px so the nav stays aligned
+       on tablets.
+   ========================================================================== */
+
+@media (min-width: 768px) {
+	/* The catalog-filter section (tree + search) is now a direct navbar
+	   child since the collapse wrapper was removed — push it to the end
+	   of the bar like the base theme's :first-child rule used to */
+	.navbar .catalog-filter {
+		margin-inline-start: auto;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	/* Kill the theme's tablet hamburger — inline nav takes over */
+	.navbar .catalog-filter-tree > .menu {
+		display: none !important;
+	}
+
+	/* Horizontal link row */
+	.navbar .catalog-filter-tree .level-1 {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.navbar .catalog-filter-tree a.cat-link,
+	.navbar .catalog-filter-tree a.cat-link:link,
+	.navbar .catalog-filter-tree a.cat-link:visited {
+		padding: 0.55rem 0.6rem;
+	}
+
+	/* Submenus hidden until hover */
+	.navbar .catalog-filter-tree .level-1 > .withchild > .submenu {
+		position: absolute;
+		display: none;
+		min-width: 12rem;
+		padding: 0.5rem 0;
+		z-index: 1;
+	}
+
+	.navbar .catalog-filter-tree .level-1 > .cat-item:hover > .submenu,
+	.navbar .catalog-filter-tree .level-1 > .cat-item:focus-within > .submenu,
+	.navbar .catalog-filter-tree .level-1 > .cat-item.hover > .submenu {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.navbar .catalog-filter-tree .level-2 > .cat-item > .item-links > .cat-link {
+		margin-bottom: 0.25rem;
+	}
+
+	/* Tablet space tuning — tighter search pill */
+	.navbar .catalog-filter-search .value,
+	.navbar .catalog-filter-search .input-group:hover .value,
+	.navbar .catalog-filter-search .input-group:focus-within .value {
+		width: 8rem;
+		min-width: 8rem;
+	}
+
+	.navbar .navbar-brand.duains-brand {
+		font-size: 1.5rem;
+	}
+}
+
+/* ==========================================================================
+   13. Mobile < 768px — hamburger opens the full-height category drawer
+       directly (no intermediate panel); search + account stay in the bar
    ========================================================================== */
 
 @media (max-width: 767px) {
-	/* Mobile bar: hamburger on the left, logo centered, basket on the right */
+	/* Mobile bar: hamburger left, logo dead-centered, search + account +
+	   basket right — search and account stay in the bar like on desktop */
 	.navbar-toggler {
 		order: 1;
 	}
 
 	.navbar .navbar-brand.duains-brand {
 		order: 2;
-		margin-inline: auto;
-		max-width: calc(100% - 7rem);
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		max-width: calc(100% - 13rem);
+	}
+
+	/* The catalog-filter section (tree + search) is one flex item — the
+	   tree is an offscreen drawer, so only the search pill is visible */
+	.navbar .catalog-filter {
+		order: 3;
+		margin-inline-start: auto;
+	}
+
+	.navbar .catalog-filter .container-xxl,
+	.navbar .catalog-filter form {
+		margin: 0;
+		padding: 0;
+		max-width: none;
+		width: auto;
+		display: flex;
+		align-items: center;
+	}
+
+	.navbar .catalog-filter-search {
+		order: 3;
+	}
+
+	.navbar-nav {
+		order: 4;
+		flex-direction: row;
+		gap: 0.25rem;
 	}
 
 	.basket-mini {
-		order: 3;
+		order: 5;
 	}
 
 	/* Re-enable the toggler the default theme hides */
@@ -726,127 +885,30 @@ h1, h2, h3, h4, h5 {
 		display: inline-block !important;
 	}
 
-	/* Default theme forces the collapse open — hide it again */
-	.navbar-expand-md .navbar-collapse {
+	/* The category drawer is triggered by the hamburger directly — the
+	   inline Categories button is redundant */
+	.navbar .catalog-filter-tree > .menu {
 		display: none !important;
-		flex-basis: auto;
 	}
 
-	.navbar-expand-md .navbar-collapse.show,
-	.navbar-expand-md .navbar-collapse.collapsing {
-		display: flex !important;
-	}
-
-	/* Collapse becomes a frosted panel below the bar */
-	.navbar-expand-md .navbar-collapse {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		right: 0;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.75rem;
-		padding: 1rem 1.25rem 1.25rem;
-		background: var(--du-glass-bg-strong);
-		-webkit-backdrop-filter: var(--du-glass-blur);
-		backdrop-filter: var(--du-glass-blur);
-		border-top: 1px solid var(--du-hairline);
-		border-bottom: 1px solid var(--du-hairline);
-		box-shadow: var(--du-header-shadow);
-		max-height: calc(100vh - var(--du-bar-h-mobile));
-		overflow-y: auto;
-		z-index: 1029;
-	}
-
-	.navbar .catalog-filter-tree {
-		margin-inline-start: 0;
-	}
-
-	/* Categories entry — full-width card button opening the zeynep drawer */
-	.navbar .catalog-filter-tree .menu {
-		display: flex !important;
-		align-items: center;
-		gap: 0.75rem;
-		width: 100%;
-		padding: 0.8rem 1rem;
-		border: 1px solid var(--du-hairline);
-		border-radius: 0.75rem;
-		background: #fff;
-		color: var(--du-ink) !important;
-		font-size: 0.78rem;
-		font-weight: 600;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		transition: border-color 0.25s var(--du-ease), color 0.25s var(--du-ease);
-	}
-
-	.navbar .catalog-filter-tree .menu::before {
-		font-size: 1.4rem;
-		line-height: 1;
-		color: var(--du-gold-deep);
-		transition: color 0.25s var(--du-ease);
-	}
-
-	.navbar .catalog-filter-tree .menu::after {
-		font: normal normal normal 14px/1 bootstrap-icons;
-		content: "\f282";
-		margin-inline-start: auto;
-		font-size: 1.1rem;
-		color: var(--du-gold);
-		transition: color 0.25s var(--du-ease);
-	}
-
-	.navbar .catalog-filter-tree .menu:hover {
-		border-color: var(--du-gold);
-		color: var(--du-gold-deep) !important;
-	}
-
-	.navbar .catalog-filter-tree .menu:hover::before {
-		color: var(--du-gold);
-	}
-
-	.navbar .catalog-filter-tree .level-1 {
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	/* Search pill stretches across the panel */
-	.navbar .catalog-filter-search .input-group {
-		width: 100%;
-	}
-
+	/* Compact search pill in the bar */
 	.navbar .catalog-filter-search .value,
 	.navbar .catalog-filter-search .input-group:hover .value,
 	.navbar .catalog-filter-search .input-group:focus-within .value {
-		flex: 1 1 auto;
-		width: auto;
-		min-width: 5rem;
+		width: 7.5rem;
+		min-width: 7.5rem;
 		padding: 0.4rem 0.6rem;
 	}
 
-	/* Account icons — right-aligned row in the panel */
-	.navbar-collapse .navbar-nav {
-		flex-direction: row;
-		justify-content: flex-end;
-		gap: 0.25rem;
-		width: 100%;
-		margin: 0;
-	}
-
-	.navbar .catalog-filter-tree a.cat-link,
-	.navbar .catalog-filter-tree a.cat-link:link,
-	.navbar .catalog-filter-tree a.cat-link:visited {
-		padding: 0.55rem 0.25rem;
-		display: block;
-	}
-
-	.navbar .catalog-filter-tree a.cat-link::after {
-		display: none;
-	}
-
-	/* Search pill keeps an always-tappable footprint */
 	.navbar .catalog-filter-search .input-group .btn {
 		min-width: 2.75rem;
+	}
+
+	/* Compact account icons */
+	.navbar-nav .login > .nav-link,
+	.navbar-nav .register > .nav-link,
+	.navbar-nav .profile > .nav-link {
+		padding: 0.35rem 0.4rem;
 	}
 
 	/* Brand scales down for the smaller bar */
@@ -855,7 +917,16 @@ h1, h2, h3, h4, h5 {
 	}
 
 	.navbar .duains-brand img {
-		max-height: 52px;
+		max-height: 48px;
+		max-width: 100%;
+	}
+
+	/* Category drawer — enforce full viewport height */
+	.catalog-filter-tree .zeynep,
+	.catalog-filter-tree .zeynep .submenu {
+		height: 100vh;
+		top: 0;
+		bottom: 0;
 	}
 
 	/* Announcement bar collapses to a single line on small screens */
@@ -1268,6 +1339,7 @@ footer {
 	.basket-mini .menu,
 	.basket-mini .zeynep,
 	.basket-mini .zeynep .header .close,
+	.catalog-filter-tree .du-drawer-foot__link,
 	footer .social .sm,
 	footer p a,
 	.back-to-top {
