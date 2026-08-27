@@ -70,6 +70,11 @@ body .main-section {
 	margin-top: calc(6rem + var(--du-announce-h));
 }
 
+/* Override the default padding on the catalog filter container */
+.catalog-filter > .container-xxl {
+	padding:0px;
+}
+
 @media (min-width: 992px) {
 	body > .content,
 	body .main-section {
@@ -437,9 +442,15 @@ h1, h2, h3, h4, h5 {
       input at right:100%, width:0) and render a fixed pill instead.
    ========================================================================== */
 
+/* The base theme hides .search-lists below 992px; we want the navbar
+   search visible at every width, like the account and basket buttons */
+.navbar .catalog-filter-search .search-lists {
+	display: block;
+}
+
 .navbar .catalog-filter-search .input-group {
 	background: rgba(255, 255, 255, 0.7);
-	border: 1px solid rgba(var(--du-gold-rgb), 0.22);
+	/* border: 1px solid rgba(var(--du-gold-rgb), 0.22); */
 	border-radius: 999px;
 	transition: border-color 0.25s var(--du-ease), box-shadow 0.25s var(--du-ease),
 		background 0.25s var(--du-ease);
@@ -482,7 +493,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .navbar .catalog-filter-search .input-group .btn-search {
-	color: var(--du-gold);
+	color: var(--du-ink);
 	transition: color 0.25s var(--du-ease), transform 0.25s var(--du-ease);
 }
 
@@ -898,8 +909,7 @@ h1, h2, h3, h4, h5 {
 		overflow: visible;
 	}
 
-	/* Tablet space tuning — tighter search pill */
-	.navbar .catalog-filter-search .value,
+/* Tablet space tuning — tighter search pill that glides open */
 	.navbar .catalog-filter-search .input-group:hover .value,
 	.navbar .catalog-filter-search .input-group:focus-within .value {
 		width: 8rem;
@@ -973,17 +983,21 @@ h1, h2, h3, h4, h5 {
 		display: none !important;
 	}
 
-	/* Compact search pill in the bar */
-	.navbar .catalog-filter-search .value,
+	/* Search pill — collapsed glass icon, glides open on hover/focus */
+	.navbar .catalog-filter-search .value {
+		width: 0;
+		min-width: 0;
+		padding: 0;
+	}
+
 	.navbar .catalog-filter-search .input-group:hover .value,
 	.navbar .catalog-filter-search .input-group:focus-within .value {
-		width: 7.5rem;
-		min-width: 7.5rem;
-		padding: 0.4rem 0.6rem;
+		width: 10rem;
+		min-width: 10rem;
 	}
 
 	.navbar .catalog-filter-search .input-group .btn {
-		min-width: 2.75rem;
+		min-width: 2.9rem;
 	}
 
 	/* Compact account icons */
