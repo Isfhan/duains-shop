@@ -75,6 +75,10 @@ body .main-section {
 	body .main-section {
 		margin-top: calc(10rem + var(--du-announce-h));
 	}
+	
+	.catalog-filter-tree .level-2 > .cat-item > .item-links > .cat-link {
+        font-weight: normal !important; 
+    }
 }
 
 h1, h2, h3, h4, h5 {
@@ -341,7 +345,7 @@ h1, h2, h3, h4, h5 {
 	transform: scaleX(1);
 }
 
-/* Hover mega/drop-down panels — glass instead of solid dark.
+/* Hover mega/drop-down panels — solid white to match the navbar.
    :hover / :focus-within fallbacks keep the dropdowns working on touch
    devices at every width; the core JS adds .hover on mouseover. */
 .navbar .catalog-filter-tree .level-1 > .cat-item:hover > .submenu,
@@ -353,9 +357,9 @@ h1, h2, h3, h4, h5 {
 .navbar .catalog-filter-tree .megamenu.cat-item:hover > .submenu,
 .navbar .catalog-filter-tree .megamenu.cat-item:focus-within > .submenu,
 .navbar .catalog-filter-tree .megamenu.cat-item.hover > .submenu {
-	background: var(--du-glass-bg-strong);
-	-webkit-backdrop-filter: var(--du-glass-blur);
-	backdrop-filter: var(--du-glass-blur);
+	background: #ffffff;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
 	border-bottom: 1px solid var(--du-hairline);
 	box-shadow: var(--du-header-shadow);
 }
@@ -374,6 +378,12 @@ h1, h2, h3, h4, h5 {
    panel as soon as the page is scrolled (static position leaves the
    viewport). Only the top-level megamenu entry is targeted. */
 @media (min-width: 992px) {
+	/* No "›" glyph on nav items that have children — the stock theme draws
+	   a subtle arrow via ::before that reads as a stray ">" */
+	.navbar .catalog-filter-tree .level-1 > .withchild > .cat-link::before {
+		display: none;
+	}
+
 	.navbar .catalog-filter-tree .level-1 > .cat-item.megamenu:hover > .submenu,
 	.navbar .catalog-filter-tree .level-1 > .cat-item.megamenu:focus-within > .submenu,
 	.navbar .catalog-filter-tree .level-1 > .cat-item.megamenu.hover > .submenu {
@@ -783,6 +793,30 @@ h1, h2, h3, h4, h5 {
 		display: none !important;
 	}
 
+	/* Release the category nav from the stock off-canvas drawer: below
+	   992px the base theme pins .zeynep at left:-20rem (pointer-events:
+	   none), leaving the restored .level-1 links trapped off-screen.
+	   Neutralize the drawer only inside the navbar so the inline nav
+	   actually renders between 768–991px. */
+	.navbar .catalog-filter-tree .zeynep,
+	.navbar .catalog-filter-tree .zeynep .submenu {
+		position: static;
+		left: auto;
+		right: auto;
+		top: auto;
+		width: auto;
+		transform: none;
+		overflow: visible;
+		pointer-events: auto;
+		background: transparent;
+		box-shadow: none;
+		transition: none;
+	}
+
+	.navbar .catalog-filter-tree .zeynep .header {
+		display: none;
+	}
+
 	/* Horizontal link row */
 	.navbar .catalog-filter-tree .level-1 {
 		display: flex;
@@ -800,9 +834,18 @@ h1, h2, h3, h4, h5 {
 	.navbar .catalog-filter-tree .level-1 > .withchild > .submenu {
 		position: absolute;
 		display: none;
-		min-width: 12rem;
-		padding: 0.5rem 0;
-		z-index: 1;
+		top: 100%;
+		bottom: auto;
+		height: auto;
+		left: 0;
+		right: auto;
+		min-width: 14rem;
+		padding: 0.75rem 1rem;
+		z-index: 1050;
+		background: #ffffff;
+		/* border: 1px solid var(--du-hairline); */
+		border-radius: 0.75rem;
+		box-shadow: var(--du-header-shadow);
 	}
 
 	.navbar .catalog-filter-tree .level-1 > .cat-item:hover > .submenu,
@@ -814,6 +857,45 @@ h1, h2, h3, h4, h5 {
 
 	.navbar .catalog-filter-tree .level-2 > .cat-item > .item-links > .cat-link {
 		margin-bottom: 0.25rem;
+	}
+
+	/* Neutralize the stock off-canvas styling that still leaks onto the
+	   released inline nav below 992px: inside .zeynep the .name cells are
+	   drawn at 125% with heavy padding, and .zeynep .next:before paints a
+	   "›" arrow in a trailing column. Undo both while the links are inline. */
+	.navbar .catalog-filter-tree .zeynep .item-links.row {
+		display: block;
+	}
+
+	.navbar .catalog-filter-tree .zeynep .item-links > .next {
+		display: none;
+	}
+
+	.navbar .catalog-filter-tree .zeynep a.cat-link,
+	.navbar .catalog-filter-tree .zeynep a.cat-link:link,
+	.navbar .catalog-filter-tree .zeynep a.cat-link:visited {
+		font-size: 1rem;
+		padding: 0.6rem 0.75rem;
+		display: inline-block;
+		width: auto;
+	}
+
+	.navbar .catalog-filter-tree .zeynep .level-2 a.cat-link {
+		font-size: 0.95rem;
+		padding: 0.45rem 0.6rem;
+	}
+
+	/* Deterministic dropdown anchor — open cleanly below the item instead
+	   of floating at an automatic static position */
+	.navbar .catalog-filter-tree .level-1 > .cat-item.withchild {
+		position: relative;
+	}
+
+	/* Keep navbar internals from clipping the open submenu */
+	.navbar .catalog-filter,
+	.navbar .catalog-filter .container-xxl,
+	.navbar .catalog-filter form {
+		overflow: visible;
 	}
 
 	/* Tablet space tuning — tighter search pill */
@@ -917,7 +999,7 @@ h1, h2, h3, h4, h5 {
 	}
 
 	.navbar .duains-brand img {
-		max-height: 48px;
+		max-height: 65px;
 		max-width: 100%;
 	}
 
