@@ -116,9 +116,7 @@ try {
 	</head>
 	<body class="{{ $page ?? '' }}">
 		<div class="du-announce" role="note">
-			<span>Complimentary delivery on orders over PKR 5,000</span>
-			<span class="du-announce__sep" aria-hidden="true"></span>
-			<span>Signature gift wrapping on every order</span>
+			<span>Free Delivery on all orders above Rs. 2500!</span>
 		</div>
 		<nav class="navbar navbar-expand-md navbar-top">
 			<a class="navbar-brand duains-brand" href="/" title="Duains">
