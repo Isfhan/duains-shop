@@ -167,7 +167,7 @@ try {
 		<footer>
 			<div class="container-xxl">
 				<div class="row du-footer-main">
-					<div class="col-lg-4 col-md-12 footer-right du-footer-brand">
+					<div class="col-lg-4 col-md-6 col-12 footer-col du-footer-brand">
 						<div class="footer-block">
 							<a class="duains-brand footer" href="/" title="Duains">
 								@if( $siteLogoUrl )
@@ -177,38 +177,65 @@ try {
 								@endif
 							</a>
 							<p class="du-footer-tagline">ELEGANCE IN EVERY SCENT</p>
-							<div class="social" aria-label="{{ __('Social media links') }}">
-								<p><a href="#" class="sm facebook" title="Facebook" rel="noopener">Facebook</a></p>
-								<p><a href="#" class="sm twitter" title="Twitter" rel="noopener">Twitter</a></p>
-								<p><a href="#" class="sm instagram" title="Instagram" rel="noopener">Instagram</a></p>
-								<p><a href="#" class="sm youtube" title="Youtube" rel="noopener">Youtube</a></p>
-							</div>
+
+							<ul class="du-footer-contact" aria-label="{{ __('Contact details') }}">
+								<li class="du-footer-contact-row">
+									<span class="du-footer-contact-icon" aria-hidden="true">
+										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-7-7.2-7-12a7 7 0 1 1 14 0c0 4.8-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+									</span>
+									<span>14 Avenue de la Paix, Paris</span>
+								</li>
+								<li class="du-footer-contact-row">
+									<span class="du-footer-contact-icon" aria-hidden="true">
+										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+									</span>
+									<a href="tel:+33144786000">+33 1 44 78 60 00</a>
+								</li>
+								<li class="du-footer-contact-row">
+									<span class="du-footer-contact-icon" aria-hidden="true">
+										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+									</span>
+									<a href="mailto:care@duains.shop">care@duains.shop</a>
+								</li>
+							</ul>
 						</div>
 					</div>
-					<div class="col-lg-4 col-md-6 footer-left du-footer-links">
+
+					<div class="col-lg-4 col-md-6 col-12 footer-col du-footer-links">
 						<div class="footer-block">
-							<h2 class="pb-3" aria-label="{{ __('Legal information') }}">{{ __( 'LEGAL' ) }}</h2>
-							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'terms']) }}">{{ __( 'Terms & Conditions' ) }}</a></p>
-							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'privacy']) }}">{{ __( 'Privacy Notice' ) }}</a></p>
-							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'cancel']) }}">{{ __( 'Cancellation' ) }}</a></p>
+							<h2 class="pb-3" aria-label="{{ __('Customer service') }}">{{ __( 'CUSTOMER SERVICE' ) }}</h2>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'faq']) }}">{{ __( 'FAQs' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'contact']) }}">{{ __( 'Contact Us' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'refund']) }}">{{ __( 'Refund Policy' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'terms']) }}">{{ __( 'Terms of Service' ) }}</a></p>
+							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'privacy']) }}">{{ __( 'Privacy Policy' ) }}</a></p>
 						</div>
 					</div>
-					<div class="col-lg-4 col-md-6 footer-center du-footer-links">
+
+					<div class="col-lg-4 col-md-12 col-12 footer-col du-footer-featured">
 						<div class="footer-block">
-							<h2 class="pb-3" aria-label="{{ __('About the company') }}">{{ __( 'ABOUT US' ) }}</h2>
-							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'contact']) }}">{{ __( 'Contact us' ) }}</a></p>
-							<p><a href="{{ airoute(config('shop.client.html.cms.page.url.target', 'aimeos_page'), ['path' => 'about']) }}">{{ __( 'Company' ) }}</a></p>
+							<h2 class="pb-3" aria-label="{{ __('Featured categories') }}">{{ __( 'FEATURED' ) }}</h2>
+							<p><a href="#">{{ __( 'Eau de Parfum' ) }}</a></p>
+							<p><a href="#">{{ __( 'Body & Hair Mist' ) }}</a></p>
+							<p><a href="#">{{ __( 'Discovery Sets' ) }}</a></p>
 						</div>
 					</div>
 				</div>
 
+				<div class="du-footer-social" aria-label="{{ __('Social media links') }}">
+					<a href="#" class="sm instagram" title="Instagram" rel="noopener" aria-label="Instagram">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+					</a>
+					<a href="#" class="sm facebook" title="Facebook" rel="noopener" aria-label="Facebook">
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.7c0-.9.3-1.5 1.6-1.5h1.6V4.5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2v2.4H7.5v3h2.8V21h3.2z"/></svg>
+					</a>
+					<a href="#" class="sm tiktok" title="TikTok" rel="noopener" aria-label="TikTok">
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3v2.3a5.7 5.7 0 0 0 4 1.6v2.5a8 8 0 0 1-4-1.1V14a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v2.6a3 3 0 1 0 2.1 2.8V3h2.5z"/></svg>
+					</a>
+				</div>
+
 				<div class="du-footer-bottom">
-					<span class="du-footer-copy">&copy; {{ date('Y') }} Duains. {{ __( 'All rights reserved.' ) }}</span>
-					<span class="du-footer-trust">
-						<span>{{ __( 'Secure checkout' ) }}</span><span class="du-footer-dots" aria-hidden="true"></span>
-						<span>{{ __( 'Fast, insured delivery' ) }}</span><span class="du-footer-dots" aria-hidden="true"></span>
-						<span>{{ __( 'Signature gift wrapping' ) }}</span>
-					</span>
+					<span class="du-footer-copy">&copy; {{ date('Y') }} {{ __( 'Duains' ) }}. {{ __( 'All Rights Reserved.' ) }}</span>
 				</div>
 			</div>
 		</footer>
