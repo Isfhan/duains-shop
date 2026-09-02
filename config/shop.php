@@ -261,7 +261,16 @@ return array_replace_recursive( $multiroute, $multishop + [
 	'mshop' => [
 		'locale' => [
 			// 'site' => '<custom site code>', // used instead of "default"
-		]
+		],
+		'cms' => [
+			'manager' => [
+				// Turns a duplicate CMS URL DB error into a clear message
+				// (app/Mshop/Cms/Manager/Decorator/UrlUnique.php)
+				'decorators' => [
+					'local' => ['UrlUnique'],
+				],
+			],
+		],
 	],
 
 

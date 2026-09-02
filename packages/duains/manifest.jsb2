@@ -1,0 +1,14 @@
+{
+	"projectName": "Duains admin JS extension",
+	"licenseText": "MIT, https://opensource.org/licenses/MIT",
+	"pkgs": [{
+		"name": "Duains GrapesJS code toolbar",
+		"file": "index-js",
+		"isDebug": true,
+		"fileIncludes": [{
+			"text": "custom-grapesjs.js",
+			"path": "admin/jqadm/js/"
+		}]
+	}],
+	"resources": []
+}
