@@ -38,7 +38,8 @@
         },
         "classmap": [
             "app/Jqadm",
-            "app/Mshop"
+            "app/Mshop",
+            "app/Client"
         ]
     },
     "autoload-dev": {

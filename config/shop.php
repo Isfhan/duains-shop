@@ -283,6 +283,19 @@ return array_replace_recursive( $multiroute, $multishop + [
 	'backend' => [
 	],
 
+	'client' => [
+		'html' => [
+			'cms' => [
+				'page' => [
+					// Renders the CMS GrapesJS editor's saved "css" as a
+					// <style> block, which ai-cms-grapesjs's Standard client
+					// otherwise silently drops (app/Client/Html/Cms/Page/CssFix.php)
+					'name' => 'CssFix',
+				],
+			],
+		],
+	],
+
 	'admin' => [
 		'jqadm' => [
 			'product' => [
